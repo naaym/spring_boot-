@@ -47,6 +47,29 @@ public class Cart {
         items.add(cartItem);
     }
 
+    public void updateItemQuantity(Long cartItemId, int quantity) {
+        CartItem item = items.stream()
+                .filter(cartItem -> cartItem.getId().equals(cartItemId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Article introuvable dans le panier"));
+
+        if (quantity <= 0) {
+            items.remove(item);
+            return;
+        }
+
+        item.setQuantity(quantity);
+    }
+
+    public void removeItem(Long cartItemId) {
+        CartItem item = items.stream()
+                .filter(cartItem -> cartItem.getId().equals(cartItemId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Article introuvable dans le panier"));
+
+        items.remove(item);
+    }
+
     public BigDecimal getTotal() {
         return items.stream()
                 .map(CartItem::getTotalPrice)

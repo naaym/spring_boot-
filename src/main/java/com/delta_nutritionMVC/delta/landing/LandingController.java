@@ -28,6 +28,7 @@ public class LandingController {
         model.addAttribute("products", cartService.listProducts());
         model.addAttribute("cart", cart);
         model.addAttribute("cartTotal", cartService.calculateTotal(cart));
+        model.addAttribute("cartItemCount", cartService.calculateItemsCount(cart));
         return "landing/landing";
     }
 
@@ -36,6 +37,33 @@ public class LandingController {
         try {
             cartService.addProductToCart(productId, session);
             redirectAttributes.addFlashAttribute("message", "Produit ajouté au panier.");
+        } catch (IllegalArgumentException ex) {
+            redirectAttributes.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/home";
+    }
+
+    @PostMapping("/update-item")
+    public String updateItemQuantity(@RequestParam("itemId") Long itemId,
+                                     @RequestParam("quantity") int quantity,
+                                     HttpSession session,
+                                     RedirectAttributes redirectAttributes) {
+        try {
+            cartService.updateItemQuantity(itemId, quantity, session);
+            redirectAttributes.addFlashAttribute("message", "Quantité mise à jour.");
+        } catch (IllegalArgumentException ex) {
+            redirectAttributes.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/home";
+    }
+
+    @PostMapping("/remove-item")
+    public String removeItem(@RequestParam("itemId") Long itemId,
+                             HttpSession session,
+                             RedirectAttributes redirectAttributes) {
+        try {
+            cartService.removeItem(itemId, session);
+            redirectAttributes.addFlashAttribute("message", "Article supprimé du panier.");
         } catch (IllegalArgumentException ex) {
             redirectAttributes.addFlashAttribute("error", ex.getMessage());
         }

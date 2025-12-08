@@ -59,6 +59,26 @@ public class CartService {
         return cart.getTotal();
     }
 
+    public int calculateItemsCount(Cart cart) {
+        return cart.getItems().stream()
+                .mapToInt(CartItem::getQuantity)
+                .sum();
+    }
+
+    @Transactional
+    public void updateItemQuantity(Long cartItemId, int quantity, HttpSession session) {
+        Cart cart = getOrCreateCart(session);
+        cart.updateItemQuantity(cartItemId, quantity);
+        cartRepository.save(cart);
+    }
+
+    @Transactional
+    public void removeItem(Long cartItemId, HttpSession session) {
+        Cart cart = getOrCreateCart(session);
+        cart.removeItem(cartItemId);
+        cartRepository.save(cart);
+    }
+
     @Transactional
     public void clearCart(HttpSession session) {
         Long cartId = (Long) session.getAttribute(CART_ID_ATTRIBUTE);
