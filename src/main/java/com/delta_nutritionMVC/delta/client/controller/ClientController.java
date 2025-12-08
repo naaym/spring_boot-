@@ -72,6 +72,27 @@ public class ClientController {
         return "clients/dashboard";
     }
 
+    @GetMapping("/clients/orders")
+    public String listOrders(HttpSession session, Model model) {
+        SignInResponse client = (SignInResponse) session.getAttribute("clientSession");
+
+        List<Order> allOrders = orderService.findAllOrdered();
+        Order lastOrderFromSession = checkoutService.loadLastOrderFromSession(session);
+
+        if (client == null && lastOrderFromSession == null && allOrders.isEmpty()) {
+            return "redirect:/auth/login";
+        }
+
+        String displayName = client != null
+                ? client.getFullName()
+                : (lastOrderFromSession != null ? lastOrderFromSession.getFullName() : "Client");
+
+        model.addAttribute("name", displayName);
+        model.addAttribute("orders", allOrders);
+
+        return "clients/orders";
+    }
+
     @GetMapping("/clients/profile")
     public String showProfile(HttpSession session, Model model) {
         SignInResponse clientSession = (SignInResponse) session.getAttribute("clientSession");
