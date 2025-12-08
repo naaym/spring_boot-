@@ -53,8 +53,12 @@ public class ClientController {
         SignInResponse client = (SignInResponse) session.getAttribute("clientSession");
 
         Order lastOrderFromSession = checkoutService.loadLastOrderFromSession(session);
-        List<Order> recentOrders = orderService.fetchLatestOrders(2);
-        List<Order> allOrders = orderService.findAllOrdered();
+        List<Order> recentOrders = client != null
+                ? orderService.fetchLatestOrdersForClient(client.getEmail(), 2)
+                : List.of();
+        List<Order> allOrders = client != null
+                ? orderService.findAllForClient(client.getEmail())
+                : List.of();
 
         if (client == null && lastOrderFromSession == null && recentOrders.isEmpty()) {
             return "redirect:/auth/login";
@@ -76,8 +80,10 @@ public class ClientController {
     public String listOrders(HttpSession session, Model model) {
         SignInResponse client = (SignInResponse) session.getAttribute("clientSession");
 
-        List<Order> allOrders = orderService.findAllOrdered();
         Order lastOrderFromSession = checkoutService.loadLastOrderFromSession(session);
+        List<Order> allOrders = client != null
+                ? orderService.findAllForClient(client.getEmail())
+                : (lastOrderFromSession != null ? List.of(lastOrderFromSession) : List.of());
 
         if (client == null && lastOrderFromSession == null && allOrders.isEmpty()) {
             return "redirect:/auth/login";

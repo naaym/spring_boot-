@@ -18,7 +18,13 @@ public class CheckoutService {
 
     public Order finalizeOrder(CheckoutForm form, HttpSession session) {
         Cart cart = cartService.getOrCreateCart(session);
-        Order order = orderService.createOrderFromCart(cart, form);
+        String clientEmail = null;
+        Object clientSession = session.getAttribute("clientSession");
+        if (clientSession instanceof com.delta_nutritionMVC.delta.auth.dtos.SignInResponse signIn) {
+            clientEmail = signIn.getEmail();
+        }
+
+        Order order = orderService.createOrderFromCart(cart, form, clientEmail);
         session.setAttribute(LAST_ORDER_ID_ATTRIBUTE, order.getId());
         cartService.clearCart(session);
         return order;

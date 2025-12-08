@@ -33,6 +33,9 @@ public class Order {
     @Column(nullable = false)
     private String address;
 
+    @Column(name = "client_email")
+    private String clientEmail;
+
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal total;
 
@@ -46,10 +49,11 @@ public class Order {
         // JPA
     }
 
-    public Order(String fullName, String phone, String address) {
+    public Order(String fullName, String phone, String address, String clientEmail) {
         this.fullName = fullName;
         this.phone = phone;
         this.address = address;
+        this.clientEmail = clientEmail;
     }
 
     @PrePersist
@@ -92,5 +96,9 @@ public class Order {
 
     public List<OrderItem> getItems() {
         return items;
+    }
+
+    public String getClientEmail() {
+        return clientEmail;
     }
 }

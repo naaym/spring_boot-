@@ -20,12 +20,12 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
     @Transactional
-    public Order createOrderFromCart(Cart cart, CheckoutForm form) {
+    public Order createOrderFromCart(Cart cart, CheckoutForm form, String clientEmail) {
         if (cart.getItems().isEmpty()) {
             throw new IllegalStateException("Le panier est vide");
         }
 
-        Order order = new Order(form.getFullName(), form.getPhone(), form.getAddress());
+        Order order = new Order(form.getFullName(), form.getPhone(), form.getAddress(), clientEmail);
 
         for (CartItem item : cart.getItems()) {
             order.addItem(item.getProduct(), item.getQuantity());
@@ -35,16 +35,19 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    public List<Order> fetchLatestOrders(int limit) {
-        if (limit <= 0) {
+    public List<Order> fetchLatestOrdersForClient(String clientEmail, int limit) {
+        if (limit <= 0 || clientEmail == null) {
             return List.of();
         }
-        List<Order> latestTwo = orderRepository.findTop2ByOrderByCreatedAtDesc();
+        List<Order> latestTwo = orderRepository.findTop2ByClientEmailOrderByCreatedAtDesc(clientEmail);
         return latestTwo.stream().limit(limit).toList();
     }
 
-    public List<Order> findAllOrdered() {
-        return orderRepository.findAllByOrderByCreatedAtDesc();
+    public List<Order> findAllForClient(String clientEmail) {
+        if (clientEmail == null) {
+            return List.of();
+        }
+        return orderRepository.findAllByClientEmailOrderByCreatedAtDesc(clientEmail);
     }
 
     public Order findById(Long id) {
