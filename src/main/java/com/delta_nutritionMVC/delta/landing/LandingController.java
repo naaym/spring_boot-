@@ -131,7 +131,8 @@ public class LandingController {
                                  @RequestParam(value = "maxPrice", required = false) String maxPrice,
                                  Model model,
                                  HttpSession session,
-                                 RedirectAttributes redirectAttributes) {
+                                 RedirectAttributes redirectAttributes,
+                                 jakarta.servlet.http.HttpServletRequest request) {
         Cart cart = cartService.getOrCreateCart(session);
 
         var category = catalogBrowsingService.getCategory(categoryId);
@@ -155,6 +156,12 @@ public class LandingController {
         model.addAttribute("cart", cart);
         model.addAttribute("cartTotal", cartService.calculateTotal(cart));
         model.addAttribute("cartItemCount", cartService.calculateItemsCount(cart));
+
+        String currentUrl = request.getRequestURI();
+        if (request.getQueryString() != null && !request.getQueryString().isEmpty()) {
+            currentUrl += "?" + request.getQueryString();
+        }
+        model.addAttribute("currentCategoryUrl", currentUrl);
 
         return "landing/category";
     }

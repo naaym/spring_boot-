@@ -115,7 +115,7 @@
                         <p class="text-lg font-semibold text-indigo-700" th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 2, 'POINT')} + ' د.ت'">0 د.ت</p>
                         <form th:action="@{/home/add-to-cart}" method="post" class="pt-2">
                             <input type="hidden" name="productId" th:value="${product.id}" />
-                            <input type="hidden" name="redirectTo" th:value="${#httpServletRequest.requestURI + (#strings.isEmpty(#httpServletRequest.queryString) ? '' : '?' + #httpServletRequest.queryString)}" />
+                            <input type="hidden" name="redirectTo" th:value="${currentCategoryUrl}" />
                             <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-xl hover:bg-indigo-700">Ajouter au panier</button>
                         </form>
                     </div>
