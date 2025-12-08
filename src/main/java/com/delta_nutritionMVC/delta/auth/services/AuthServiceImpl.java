@@ -40,7 +40,9 @@ public class AuthServiceImpl implements AuthService {
         return new SignInResponse(
                 "User Authenticated Successfully",
                 token,
-                user.getRole().name()
+                user.getRole().name(),
+                user.getEmail(),
+                user.getFullName()
         );
     }
 }

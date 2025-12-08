@@ -29,7 +29,7 @@
             <a href="#" class="flex items-center gap-3 text-lg p-3 rounded-lg hover:bg-gray-100">
                  Points fidélité
             </a>
-            <a href="#" class="flex items-center gap-3 text-lg p-3 rounded-lg hover:bg-gray-100">
+            <a href="/clients/profile" class="flex items-center gap-3 text-lg p-3 rounded-lg hover:bg-gray-100">
                  Mon profil
             </a>
             <a href="#" class="flex items-center gap-3 text-lg p-3 rounded-lg hover:bg-gray-100">
@@ -49,10 +49,10 @@
 
         <!-- HEADER -->
         <div class="flex justify-between items-center mb-8">
-            <h2 class="text-3xl font-bold text-gray-800">Bienvenue, Oussama </h2>
+            <h2 class="text-3xl font-bold text-gray-800">Bienvenue, <span th:text="${name}">Client</span></h2>
 
             <div class="flex items-center gap-3">
-                <span class="font-semibold">Mon compte</span>
+                <span class="font-semibold" th:text="${name}">Mon compte</span>
                 <img src="https://ui-avatars.com/api/?name=iheb hkiri" class="w-10 h-10 rounded-full shadow" />
             </div>
         </div>
