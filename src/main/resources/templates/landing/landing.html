@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -17,13 +17,60 @@
         <ul class="hidden md:flex gap-8 text-lg">
             <li><a href="#" class="hover:text-indigo-600">Accueil</a></li>
             <li><a href="#" class="hover:text-indigo-600">Boutique</a></li>
-            <li><a href="#" class="hover:text-indigo-600">Catégories</a></li>
+            <li><a th:href="@{/home/checkout}" class="hover:text-indigo-600">Checkout</a></li>
             <li><a href="#" class="hover:text-indigo-600">Contact</a></li>
         </ul>
 
-        <button class="md:hidden text-xl">☰</button>
+        <div class="flex items-center gap-6">
+            <details class="relative" aria-label="Panier">
+                <summary class="list-none flex items-center cursor-pointer gap-2">
+                    <div class="relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7 text-gray-700">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                        </svg>
+                        <span class="absolute -top-2 -right-2 bg-blue-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center" th:text="${cartItemCount}">0</span>
+                    </div>
+                </summary>
+                <div class="absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-lg border p-4 space-y-3">
+                    <p class="text-lg font-semibold">Panier</p>
+                    <div th:if="${#lists.isEmpty(cart.items)}" class="text-sm text-gray-500">Votre panier est vide.</div>
+                    <div th:if="${!#lists.isEmpty(cart.items)}" class="space-y-3 max-h-64 overflow-y-auto">
+                        <div class="border rounded-lg p-3" th:each="item : ${cart.items}">
+                            <div class="flex justify-between">
+                                <div>
+                                    <p class="font-semibold" th:text="${item.product.name}">Produit</p>
+                                    <p class="text-xs text-gray-500" th:text="${item.product.description}">Description</p>
+                                </div>
+                                <form th:action="@{/home/remove-item}" method="post">
+                                    <input type="hidden" name="itemId" th:value="${item.id}" />
+                                    <button type="submit" class="text-red-500 text-sm hover:underline">Supprimer</button>
+                                </form>
+                            </div>
+                            <div class="flex items-center justify-between mt-3">
+                                <form th:action="@{/home/update-item}" method="post" class="flex items-center gap-2">
+                                    <input type="hidden" name="itemId" th:value="${item.id}" />
+                                    <input type="number" name="quantity" min="1" class="w-16 border rounded-lg px-2 py-1" th:value="${item.quantity}" />
+                                    <button type="submit" class="text-indigo-600 text-sm font-semibold">Mettre à jour</button>
+                                </form>
+                                <p class="font-semibold text-indigo-700" th:text="${item.totalPrice} + ' د.ت'">0 د.ت</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a th:href="@{/home/checkout}" class="block text-center bg-indigo-600 text-white py-2 rounded-xl hover:bg-indigo-700" th:classappend="${#lists.isEmpty(cart.items)} ? ' pointer-events-none opacity-50' : ''">Passer au checkout</a>
+                </div>
+            </details>
+            <button class="md:hidden text-xl">☰</button>
+        </div>
     </div>
 </nav>
+
+<div class="max-w-4xl mx-auto mt-24 px-6" th:if="${message}">
+    <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg" th:text="${message}"></div>
+</div>
+
+<div class="max-w-4xl mx-auto mt-24 px-6" th:if="${error}">
+    <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg" th:text="${error}"></div>
+</div>
 
 <!-- HERO -->
 <section class="pt-28 pb-20 bg-gradient-to-r from-indigo-700 to-purple-700 text-white">
@@ -77,44 +124,21 @@
         <h2 class="text-3xl font-bold mb-10">Best Sellers</h2>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-
-            <!-- PRODUCT CARD -->
-            <div class="bg-white p-5 rounded-xl shadow hover:shadow-xl transition">
-                <div class="h-56 bg-gray-200 rounded-xl"></div>
-                <h3 class="text-xl font-bold mt-4">Produit 1</h3>
+            <div class="bg-white p-5 rounded-xl shadow hover:shadow-xl transition" th:each="product : ${products}">
+                <div class="h-56 bg-gray-200 rounded-xl flex items-center justify-center text-gray-500">
+                    <span th:text="${product.description}">Supplément</span>
+                </div>
+                <h3 class="text-xl font-bold mt-4" th:text="${product.name}">Produit</h3>
 
                 <p class="mt-2">
-                    <span class="line-through text-gray-500">65 د.ت</span>
-                    <span class="font-bold text-indigo-600 ml-2">49 د.ت</span>
+                    <span class="line-through text-gray-500" th:if="${product.originalPrice != null}" th:text="${product.originalPrice} + ' د.ت'">65 د.ت</span>
+                    <span class="font-bold text-indigo-600 ml-2" th:text="${product.price} + ' د.ت'">49 د.ت</span>
                 </p>
 
-                <button class="mt-4 w-full bg-indigo-600 text-white py-2 rounded-xl hover:bg-indigo-700">
-                    Ajouter au panier
-                </button>
-            </div>
-
-            <!-- PRODUCT CARD -->
-            <div class="bg-white p-5 rounded-xl shadow hover:shadow-xl transition">
-                <div class="h-56 bg-gray-200 rounded-xl"></div>
-                <h3 class="text-xl font-bold mt-4">Produit 2</h3>
-
-                <p class="mt-2 font-bold text-indigo-600">89 د.ت</p>
-
-                <button class="mt-4 w-full bg-indigo-600 text-white py-2 rounded-xl hover:bg-indigo-700">
-                    Ajouter au panier
-                </button>
-            </div>
-
-            <!-- PRODUCT CARD -->
-            <div class="bg-white p-5 rounded-xl shadow hover:shadow-xl transition">
-                <div class="h-56 bg-gray-200 rounded-xl"></div>
-                <h3 class="text-xl font-bold mt-4">Produit 3</h3>
-
-                <p class="mt-2 font-bold text-indigo-600">129 د.ت</p>
-
-                <button class="mt-4 w-full bg-indigo-600 text-white py-2 rounded-xl hover:bg-indigo-700">
-                    Ajouter au panier
-                </button>
+                <form th:action="@{/home/add-to-cart}" method="post" class="mt-4">
+                    <input type="hidden" name="productId" th:value="${product.id}" />
+                    <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-xl hover:bg-indigo-700">Ajouter au panier</button>
+                </form>
             </div>
 
         </div>

@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Admin Dashboard </title>
+    <title>Dashboard Admin</title>
 </head>
-
 <body class="bg-gray-100">
-
 <div class="flex min-h-screen">
 
     <!-- SIDEBAR -->
@@ -16,20 +14,14 @@
         <h1 class="text-2xl font-extrabold text-indigo-700 mb-10">Qowa Admin</h1>
 
         <nav class="space-y-4">
-            <a href="#" class="flex items-center gap-3 text-lg p-3 rounded-lg bg-indigo-50 text-indigo-700 font-semibold">
+            <a href="/admins/dashboard" class="flex items-center gap-3 text-lg p-3 rounded-lg bg-indigo-50 text-indigo-700 font-semibold">
                 📊 Dashboard
             </a>
-            <a href="#" class="flex items-center gap-3 text-lg p-3 rounded-lg hover:bg-gray-100">
+            <a href="/admins/categories" class="flex items-center gap-3 text-lg p-3 rounded-lg hover:bg-gray-100">
                 🗂️ Catégories
             </a>
-            <a href="#" class="flex items-center gap-3 text-lg p-3 rounded-lg hover:bg-gray-100">
-                🛒 Produits
-            </a>
-            <a href="#" class="flex items-center gap-3 text-lg p-3 rounded-lg hover:bg-gray-100">
+            <a href="/admins/orders" class="flex items-center gap-3 text-lg p-3 rounded-lg hover:bg-gray-100">
                 📦 Commandes
-            </a>
-            <a href="#" class="flex items-center gap-3 text-lg p-3 rounded-lg hover:bg-gray-100">
-                👤 Clients
             </a>
             <a href="/auth/logout" class="flex items-center gap-3 text-lg p-3 rounded-lg text-red-600 hover:bg-red-50">
                 🚪 Déconnexion
@@ -38,12 +30,14 @@
     </aside>
 
     <!-- MAIN CONTENT -->
-    <main class="flex-1 p-8">
+    <main class="flex-1 p-8 space-y-10">
 
         <!-- HEADER -->
-        <div class="flex justify-between items-center mb-10">
-            <h2 class="text-4xl font-bold text-gray-800">Dashboard Admin</h2>
-
+        <div class="flex justify-between items-center mb-4">
+            <div>
+                <p class="text-sm text-gray-500">Vue d'ensemble</p>
+                <h2 class="text-4xl font-bold text-gray-800">Dashboard Admin</h2>
+            </div>
             <div class="flex items-center gap-3">
                 <span class="font-semibold">Admin</span>
                 <img src="https://ui-avatars.com/api/?name=Admin" class="w-10 h-10 rounded-full shadow" />
@@ -51,133 +45,95 @@
         </div>
 
         <!-- STATS -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-
-            <div class="bg-white p-6 rounded-xl shadow">
-                <h3 class="text-gray-600">Total Produits</h3>
-                <p class="text-3xl font-bold mt-2">120</p>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="bg-white p-6 rounded-xl shadow border border-indigo-50">
+                <p class="text-sm text-gray-500">Total Produits</p>
+                <p class="text-3xl font-bold mt-2" th:text="${stats.products}">0</p>
             </div>
-
-            <div class="bg-white p-6 rounded-xl shadow">
-                <h3 class="text-gray-600">Catégories</h3>
-                <p class="text-3xl font-bold mt-2">12</p>
+            <div class="bg-white p-6 rounded-xl shadow border border-indigo-50">
+                <p class="text-sm text-gray-500">Catégories</p>
+                <p class="text-3xl font-bold mt-2" th:text="${stats.categories}">0</p>
             </div>
-
-            <div class="bg-white p-6 rounded-xl shadow">
-                <h3 class="text-gray-600">Commandes</h3>
-                <p class="text-3xl font-bold mt-2">890</p>
+            <div class="bg-white p-6 rounded-xl shadow border border-indigo-50">
+                <p class="text-sm text-gray-500">Commandes</p>
+                <p class="text-3xl font-bold mt-2" th:text="${stats.orders}">0</p>
             </div>
-
-            <div class="bg-white p-6 rounded-xl shadow">
-                <h3 class="text-gray-600">Clients</h3>
-                <p class="text-3xl font-bold mt-2">354</p>
+            <div class="bg-white p-6 rounded-xl shadow border border-indigo-50">
+                <p class="text-sm text-gray-500">Clients</p>
+                <p class="text-3xl font-bold mt-2" th:text="${stats.clients}">0</p>
             </div>
         </div>
 
-        <!-- SECTION : ADD CATEGORY -->
-        <div class="bg-white p-6 rounded-xl shadow mb-12">
-            <h3 class="text-2xl font-bold mb-4">🗂️ Ajouter une catégorie</h3>
-
-            <form class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label class="text-gray-700 font-semibold">Nom de la catégorie</label>
-                    <input type="text" class="w-full mt-2 p-3 border rounded-lg focus:ring focus:ring-indigo-300" placeholder="Ex: Créatine">
+        <!-- CHART-LIKE CARDS -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-xl font-bold">Activité récente</h3>
+                    <span class="text-sm text-gray-500" th:text="${#lists.size(recentOrders)} + ' dernières commandes'"></span>
                 </div>
-
-                <div>
-                    <label class="text-gray-700 font-semibold">Image (URL ou Upload)</label>
-                    <input type="text" class="w-full mt-2 p-3 border rounded-lg" placeholder="https://...">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full text-left">
+                        <thead>
+                        <tr class="text-gray-500 text-sm">
+                            <th class="py-2">Client</th>
+                            <th class="py-2">Total</th>
+                            <th class="py-2">Statut</th>
+                            <th class="py-2">Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="order : ${recentOrders}" class="border-b last:border-0">
+                            <td class="py-2 font-semibold" th:text="${order.fullName}"></td>
+                            <td class="py-2" th:text="${#numbers.formatDecimal(order.total, 1, 'POINT', 2, 'NONE')} + ' د.ت'"></td>
+                            <td class="py-2">
+                                <span class="px-3 py-1 rounded-full text-xs"
+                                      th:text="${order.status}"
+                                      th:classappend="${order.status.name() == 'ANNULEE' ? 'bg-red-100 text-red-700' : (order.status.name() == 'EN_ROUTE' ? 'bg-blue-100 text-blue-700' : 'bg-amber-100 text-amber-700')}"></span>
+                            </td>
+                            <td class="py-2 text-gray-500" th:text="${#temporals.format(order.createdAt, 'dd/MM/yyyy HH:mm')}"></td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(recentOrders)}">
+                            <td colspan="4" class="py-4 text-gray-500">Aucune commande pour le moment.</td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
-
-                <div class="md:col-span-2">
-                    <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-semibold w-full md:w-auto">
-                        Ajouter la catégorie
-                    </button>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow space-y-4">
+                <h3 class="text-xl font-bold">Statistiques rapides</h3>
+                <div class="space-y-3">
+                    <div>
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>Progression catalogue</span>
+                            <span th:text="${stats.categories} + ' catégories'"></span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                            <div class="h-2 rounded-full bg-indigo-500" th:style="'width:' + (${stats.categories} > 0 ? 100 : 20) + '%'"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>Produits actifs</span>
+                            <span th:text="${stats.products}"></span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                            <div class="h-2 rounded-full bg-green-500" th:style="'width:' + (${stats.products} > 0 ? 100 : 10) + '%'"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>Clients</span>
+                            <span th:text="${stats.clients}"></span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                            <div class="h-2 rounded-full bg-orange-400" th:style="'width:' + (${stats.clients} > 0 ? 100 : 15) + '%'"></div>
+                        </div>
+                    </div>
                 </div>
-            </form>
-        </div>
-
-        <!-- SECTION : ADD PRODUCT -->
-        <div class="bg-white p-6 rounded-xl shadow mb-12">
-            <h3 class="text-2xl font-bold mb-4">🛒 Ajouter un produit</h3>
-
-            <form class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-                <div>
-                    <label class="text-gray-700 font-semibold">Nom du produit</label>
-                    <input type="text" class="w-full mt-2 p-3 border rounded-lg" placeholder="Whey Isolate 1KG">
-                </div>
-
-                <div>
-                    <label class="text-gray-700 font-semibold">Prix</label>
-                    <input type="number" class="w-full mt-2 p-3 border rounded-lg" placeholder="99">
-                </div>
-
-                <div>
-                    <label class="text-gray-700 font-semibold">Catégorie</label>
-                    <select class="w-full mt-2 p-3 border rounded-lg">
-                        <option>Protéines</option>
-                        <option>Créatine</option>
-                        <option>Accessoires</option>
-                        <option>Vêtements</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="text-gray-700 font-semibold">Stock</label>
-                    <input type="number" class="w-full mt-2 p-3 border rounded-lg" placeholder="50">
-                </div>
-
-                <div class="md:col-span-2">
-                    <label class="text-gray-700 font-semibold">Description</label>
-                    <textarea class="w-full mt-2 p-3 border rounded-lg" rows="4" placeholder="Description du produit..."></textarea>
-                </div>
-
-                <div class="md:col-span-2">
-                    <label class="text-gray-700 font-semibold">Image du produit (URL)</label>
-                    <input type="text" class="w-full mt-2 p-3 border rounded-lg" placeholder="https://...">
-                </div>
-
-                <div class="md:col-span-2">
-                    <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-semibold w-full md:w-auto">
-                        Ajouter le produit
-                    </button>
-                </div>
-            </form>
-        </div>
-
-        <!-- PRODUCT LIST (PREVIEW) -->
-        <div class="bg-white p-6 rounded-xl shadow">
-            <h3 class="text-2xl font-bold mb-6">📦 Produits existants</h3>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-                <div class="bg-gray-50 p-4 rounded-xl shadow">
-                    <div class="h-40 bg-gray-200 rounded-lg"></div>
-                    <h4 class="font-bold mt-3">Whey Isolate 1KG</h4>
-                    <p class="text-indigo-600 font-semibold">99 د.ت</p>
-                    <button class="mt-2 bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm w-full">Supprimer</button>
-                </div>
-
-                <div class="bg-gray-50 p-4 rounded-xl shadow">
-                    <div class="h-40 bg-gray-200 rounded-lg"></div>
-                    <h4 class="font-bold mt-3">Créatine 500g</h4>
-                    <p class="text-indigo-600 font-semibold">49 د.ت</p>
-                    <button class="mt-2 bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm w-full">Supprimer</button>
-                </div>
-
-                <div class="bg-gray-50 p-4 rounded-xl shadow">
-                    <div class="h-40 bg-gray-200 rounded-lg"></div>
-                    <h4 class="font-bold mt-3">Gants Pro</h4>
-                    <p class="text-indigo-600 font-semibold">35 د.ت</p>
-                    <button class="mt-2 bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm w-full">Supprimer</button>
-                </div>
-
             </div>
         </div>
 
     </main>
 </div>
-
 </body>
 </html>

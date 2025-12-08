@@ -4,22 +4,28 @@ import com.delta_nutritionMVC.delta.auth.dtos.SignInResponse;
 import com.delta_nutritionMVC.delta.client.dtos.ClientSignUpRequest;
 import com.delta_nutritionMVC.delta.client.dtos.ClientUpdateProfilRequest;
 import com.delta_nutritionMVC.delta.client.services.ClientService;
-
+import com.delta_nutritionMVC.delta.landing.models.Order;
+import com.delta_nutritionMVC.delta.landing.services.CheckoutService;
+import com.delta_nutritionMVC.delta.landing.services.OrderService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.math.BigDecimal;
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 public class ClientController {
 
     private final ClientService clientService;
+    private final CheckoutService checkoutService;
+    private final OrderService orderService;
 
     @GetMapping("/clients/signup")
     public String showSignupForm(Model model) {
@@ -42,18 +48,64 @@ public class ClientController {
 
         return "auth/login";
     }
+
     @GetMapping("/clients/dashboard")
     public String dashboard(HttpSession session, Model model) {
-
         SignInResponse client = (SignInResponse) session.getAttribute("clientSession");
 
-        if (client == null) {
+        Order lastOrderFromSession = checkoutService.loadLastOrderFromSession(session);
+        List<Order> recentOrders = client != null
+                ? orderService.fetchLatestOrdersForClient(client.getEmail(), 2)
+                : List.of();
+        List<Order> allOrders = client != null
+                ? orderService.findAllForClient(client.getEmail())
+                : List.of();
+
+        BigDecimal totalSpent = BigDecimal.ZERO;
+        if (client != null) {
+            totalSpent = orderService.calculateTotalSpentExcludingCancelled(client.getEmail());
+        } else if (lastOrderFromSession != null && !lastOrderFromSession.isCancelled()) {
+            totalSpent = lastOrderFromSession.getTotal();
+        }
+
+        if (client == null && lastOrderFromSession == null && recentOrders.isEmpty()) {
             return "redirect:/auth/login";
         }
 
-        model.addAttribute("name", client.getFullName());
+        String displayName = client != null
+                ? client.getFullName()
+                : (lastOrderFromSession != null ? lastOrderFromSession.getFullName() : "Client");
+
+        model.addAttribute("name", displayName);
+        model.addAttribute("recentOrders", recentOrders);
+        model.addAttribute("lastOrder", recentOrders.isEmpty() ? lastOrderFromSession : recentOrders.get(0));
+        model.addAttribute("orders", allOrders);
+        model.addAttribute("totalSpent", totalSpent);
 
         return "clients/dashboard";
+    }
+
+    @GetMapping("/clients/orders")
+    public String listOrders(HttpSession session, Model model) {
+        SignInResponse client = (SignInResponse) session.getAttribute("clientSession");
+
+        Order lastOrderFromSession = checkoutService.loadLastOrderFromSession(session);
+        List<Order> allOrders = client != null
+                ? orderService.findAllForClient(client.getEmail())
+                : (lastOrderFromSession != null ? List.of(lastOrderFromSession) : List.of());
+
+        if (client == null && lastOrderFromSession == null && allOrders.isEmpty()) {
+            return "redirect:/auth/login";
+        }
+
+        String displayName = client != null
+                ? client.getFullName()
+                : (lastOrderFromSession != null ? lastOrderFromSession.getFullName() : "Client");
+
+        model.addAttribute("name", displayName);
+        model.addAttribute("orders", allOrders);
+
+        return "clients/orders";
     }
 
     @GetMapping("/clients/profile")
@@ -114,4 +166,3 @@ public class ClientController {
         }
     }
 }
-
