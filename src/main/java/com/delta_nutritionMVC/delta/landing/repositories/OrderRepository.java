@@ -11,6 +11,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findTop2ByClientEmailOrderByCreatedAtDesc(String clientEmail);
     List<Order> findAllByClientEmailOrderByCreatedAtDesc(String clientEmail);
     List<Order> findAllByClientEmailAndStatusNotOrderByCreatedAtDesc(String clientEmail, OrderStatus status);
+    List<Order> findTop5ByOrderByCreatedAtDesc();
 
     default List<Order> findAllOrderedByCreatedDateDesc() {
         return findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
