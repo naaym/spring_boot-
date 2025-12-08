@@ -38,6 +38,10 @@ public class AuthController {
 
             session.setAttribute("clientSession", client);
 
+            if ("ADMIN".equalsIgnoreCase(client.getRole())) {
+                return "redirect:/admins/dashboard";
+            }
+
             return "redirect:/clients/dashboard";
 
         } catch (RuntimeException ex) {
