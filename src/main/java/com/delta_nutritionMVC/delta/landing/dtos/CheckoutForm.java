@@ -1,4 +1,4 @@
-package com.delta_nutritionMVC.delta.landing;
+package com.delta_nutritionMVC.delta.landing.dtos;
 
 public class CheckoutForm {
     private String fullName;

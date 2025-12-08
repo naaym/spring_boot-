@@ -1,4 +1,4 @@
-package com.delta_nutritionMVC.delta.landing;
+package com.delta_nutritionMVC.delta.landing.models;
 
 import java.math.BigDecimal;
 import java.util.List;

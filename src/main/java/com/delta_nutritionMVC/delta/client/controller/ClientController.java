@@ -4,7 +4,7 @@ import com.delta_nutritionMVC.delta.auth.dtos.SignInResponse;
 import com.delta_nutritionMVC.delta.client.dtos.ClientSignUpRequest;
 import com.delta_nutritionMVC.delta.client.dtos.ClientUpdateProfilRequest;
 import com.delta_nutritionMVC.delta.client.services.ClientService;
-import com.delta_nutritionMVC.delta.landing.OrderSummary;
+import com.delta_nutritionMVC.delta.landing.models.OrderSummary;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
