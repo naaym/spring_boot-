@@ -81,7 +81,7 @@ public class OrderService {
                 .map(order -> {
                     order.setStatus(status);
                     notificationService.markOrderNotificationsAsRead(orderId);
-                    return order;
+                    return orderRepository.save(order);
                 });
     }
 
