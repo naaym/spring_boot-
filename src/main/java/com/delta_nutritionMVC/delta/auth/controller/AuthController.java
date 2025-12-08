@@ -45,4 +45,10 @@ public class AuthController {
             return "auth/login";
         }
     }
+
+    @GetMapping("/auth/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/auth/login";
+    }
 }
