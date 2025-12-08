@@ -1,6 +1,7 @@
 package com.delta_nutritionMVC.delta.landing.services;
 
 import com.delta_nutritionMVC.delta.landing.dtos.CheckoutForm;
+import com.delta_nutritionMVC.delta.landing.models.Cart;
 import com.delta_nutritionMVC.delta.landing.models.CartItem;
 import com.delta_nutritionMVC.delta.landing.models.OrderSummary;
 import jakarta.servlet.http.HttpSession;
@@ -10,7 +11,6 @@ import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -20,11 +20,11 @@ public class CheckoutService {
     private final CartService cartService;
 
     public OrderSummary prepareOrder(CheckoutForm form, HttpSession session) {
-        Map<String, CartItem> cart = cartService.getOrCreateCart(session);
+        Cart cart = cartService.getOrCreateCart(session);
         BigDecimal total = cartService.calculateTotal(cart);
 
         OrderSummary summary = new OrderSummary(
-                new ArrayList<>(cart.values()),
+                new ArrayList<>(cart.getItems()),
                 form.getFullName(),
                 form.getPhone(),
                 form.getAddress(),

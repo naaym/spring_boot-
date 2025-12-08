@@ -1,7 +1,7 @@
 package com.delta_nutritionMVC.delta.landing;
 
 import com.delta_nutritionMVC.delta.landing.dtos.CheckoutForm;
-import com.delta_nutritionMVC.delta.landing.models.CartItem;
+import com.delta_nutritionMVC.delta.landing.models.Cart;
 import com.delta_nutritionMVC.delta.landing.services.CartService;
 import com.delta_nutritionMVC.delta.landing.services.CheckoutService;
 import jakarta.servlet.http.HttpSession;
@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Map;
-
 @Controller
 @RequestMapping("/home")
 @RequiredArgsConstructor
@@ -26,7 +24,7 @@ public class LandingController {
 
     @GetMapping
     public String landing(Model model, HttpSession session) {
-        Map<String, CartItem> cart = cartService.getOrCreateCart(session);
+        Cart cart = cartService.getOrCreateCart(session);
         model.addAttribute("products", cartService.listProducts());
         model.addAttribute("cart", cart);
         model.addAttribute("cartTotal", cartService.calculateTotal(cart));
@@ -46,8 +44,8 @@ public class LandingController {
 
     @GetMapping("/checkout")
     public String checkout(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
-        Map<String, CartItem> cart = cartService.getOrCreateCart(session);
-        if (cart.isEmpty()) {
+        Cart cart = cartService.getOrCreateCart(session);
+        if (cart.getItems().isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Ajoutez au moins un produit avant de passer au paiement.");
             return "redirect:/home";
         }
@@ -63,8 +61,8 @@ public class LandingController {
 
     @PostMapping("/checkout")
     public String submitCheckout(CheckoutForm form, HttpSession session, Model model, RedirectAttributes redirectAttributes) {
-        Map<String, CartItem> cart = cartService.getOrCreateCart(session);
-        if (cart.isEmpty()) {
+        Cart cart = cartService.getOrCreateCart(session);
+        if (cart.getItems().isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Votre panier est vide.");
             return "redirect:/home";
         }

@@ -41,12 +41,12 @@
         <div class="bg-white p-8 rounded-2xl shadow">
             <h3 class="text-xl font-bold mb-4">Récapitulatif</h3>
             <div class="space-y-4">
-                <div class="flex justify-between" th:each="entry : ${cart}">
+                <div class="flex justify-between" th:each="item : ${cart.items}">
                     <div>
-                        <p class="font-semibold" th:text="${entry.value.product.name}">Produit</p>
-                        <p class="text-sm text-gray-600" th:text="'Quantité : ' + ${entry.value.quantity}"></p>
+                        <p class="font-semibold" th:text="${item.product.name}">Produit</p>
+                        <p class="text-sm text-gray-600" th:text="'Quantité : ' + ${item.quantity}"></p>
                     </div>
-                    <p class="font-semibold" th:text="${entry.value.totalPrice} + ' د.ت'">0 د.ت</p>
+                    <p class="font-semibold" th:text="${item.totalPrice} + ' د.ت'">0 د.ت</p>
                 </div>
             </div>
             <div class="border-t mt-6 pt-4">
