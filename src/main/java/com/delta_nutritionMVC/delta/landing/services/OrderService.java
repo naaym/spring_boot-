@@ -1,5 +1,6 @@
 package com.delta_nutritionMVC.delta.landing.services;
 
+import com.delta_nutritionMVC.delta.admin.services.NotificationService;
 import com.delta_nutritionMVC.delta.landing.dtos.CheckoutForm;
 import com.delta_nutritionMVC.delta.landing.models.Cart;
 import com.delta_nutritionMVC.delta.landing.models.CartItem;
@@ -20,6 +21,7 @@ import java.util.Optional;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final NotificationService notificationService;
 
     @Transactional
     public Order createOrderFromCart(Cart cart, CheckoutForm form, String clientEmail) {
@@ -34,7 +36,9 @@ public class OrderService {
         }
 
         order.setTotal(calculateTotal(order.getItems()));
-        return orderRepository.save(order);
+        Order savedOrder = orderRepository.save(order);
+        notificationService.notifyNewOrder(savedOrder);
+        return savedOrder;
     }
 
     public List<Order> fetchLatestOrdersForClient(String clientEmail, int limit) {
@@ -76,6 +80,7 @@ public class OrderService {
         return orderRepository.findById(orderId)
                 .map(order -> {
                     order.setStatus(status);
+                    notificationService.markOrderNotificationsAsRead(orderId);
                     return order;
                 });
     }
