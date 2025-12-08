@@ -5,6 +5,7 @@ import com.delta_nutritionMVC.delta.landing.models.Cart;
 import com.delta_nutritionMVC.delta.landing.models.CartItem;
 import com.delta_nutritionMVC.delta.landing.models.Order;
 import com.delta_nutritionMVC.delta.landing.models.OrderItem;
+import com.delta_nutritionMVC.delta.landing.models.OrderStatus;
 import com.delta_nutritionMVC.delta.landing.repositories.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -52,6 +54,34 @@ public class OrderService {
 
     public Order findById(Long id) {
         return orderRepository.findById(id).orElse(null);
+    }
+
+    public BigDecimal calculateTotalSpentExcludingCancelled(String clientEmail) {
+        if (clientEmail == null) {
+            return BigDecimal.ZERO;
+        }
+
+        return orderRepository.findAllByClientEmailAndStatusNotOrderByCreatedAtDesc(clientEmail, OrderStatus.ANNULEE)
+                .stream()
+                .map(Order::getTotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Transactional
+    public Optional<Order> updateStatus(Long orderId, OrderStatus status) {
+        if (status == null) {
+            return Optional.empty();
+        }
+
+        return orderRepository.findById(orderId)
+                .map(order -> {
+                    order.setStatus(status);
+                    return order;
+                });
+    }
+
+    public List<Order> findAllOrders() {
+        return orderRepository.findAllOrderedByCreatedDateDesc();
     }
 
     private BigDecimal calculateTotal(List<OrderItem> items) {

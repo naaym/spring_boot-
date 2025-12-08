@@ -75,7 +75,7 @@
 
             <div class="bg-white p-6 rounded-xl shadow">
                 <h3 class="text-gray-600">Dépenses totales</h3>
-                <p class="text-3xl font-bold mt-2 text-green-600" th:text="${lastOrder != null} ? ${lastOrder.total} + ' د.ت' : '0 د.ت'">890 د.ت</p>
+                <p class="text-3xl font-bold mt-2 text-green-600" th:text="${totalSpent != null} ? ${totalSpent} + ' د.ت' : '0 د.ت'">890 د.ت</p>
             </div>
         </div>
 
@@ -93,7 +93,12 @@
                         <p class="text-gray-700"><span class="font-semibold">Client :</span> <span th:text="${order.fullName}">Nom</span></p>
                         <p class="text-gray-700"><span class="font-semibold">Téléphone :</span> <span th:text="${order.phone}">00 000 000</span></p>
                         <p class="text-gray-700"><span class="font-semibold">Adresse de livraison :</span> <span th:text="${order.address}">Adresse</span></p>
-                        <p class="text-gray-500 text-sm" th:text="${#temporals.format(order.createdAt, 'dd/MM/yyyy HH:mm')}">Date</p>
+                        <div class="flex items-center gap-3">
+                            <p class="text-gray-500 text-sm" th:text="${#temporals.format(order.createdAt, 'dd/MM/yyyy HH:mm')}">Date</p>
+                            <span class="px-2 py-1 rounded-full text-xs font-semibold"
+                                  th:classappend="${order.status.name() == 'ANNULEE'} ? 'bg-red-100 text-red-700' : (order.status.name() == 'EN_ROUTE' ? 'bg-blue-100 text-blue-700' : 'bg-amber-100 text-amber-700')"
+                                  th:text="${order.status.label}">Pas encore livrée</span>
+                        </div>
                     </div>
 
                     <div class="flex justify-between items-center mb-3">

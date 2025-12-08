@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -60,6 +61,13 @@ public class ClientController {
                 ? orderService.findAllForClient(client.getEmail())
                 : List.of();
 
+        BigDecimal totalSpent = BigDecimal.ZERO;
+        if (client != null) {
+            totalSpent = orderService.calculateTotalSpentExcludingCancelled(client.getEmail());
+        } else if (lastOrderFromSession != null && !lastOrderFromSession.isCancelled()) {
+            totalSpent = lastOrderFromSession.getTotal();
+        }
+
         if (client == null && lastOrderFromSession == null && recentOrders.isEmpty()) {
             return "redirect:/auth/login";
         }
@@ -72,6 +80,7 @@ public class ClientController {
         model.addAttribute("recentOrders", recentOrders);
         model.addAttribute("lastOrder", recentOrders.isEmpty() ? lastOrderFromSession : recentOrders.get(0));
         model.addAttribute("orders", allOrders);
+        model.addAttribute("totalSpent", totalSpent);
 
         return "clients/dashboard";
     }

@@ -7,6 +7,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
@@ -39,6 +41,10 @@ public class Order {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal total;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private OrderStatus status = OrderStatus.PAS_ENCORE_LIVREE;
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -54,10 +60,14 @@ public class Order {
         this.phone = phone;
         this.address = address;
         this.clientEmail = clientEmail;
+        this.status = OrderStatus.PAS_ENCORE_LIVREE;
     }
 
     @PrePersist
     protected void onCreate() {
+        if (this.status == null) {
+            this.status = OrderStatus.PAS_ENCORE_LIVREE;
+        }
         this.createdAt = LocalDateTime.now();
     }
 
@@ -100,5 +110,17 @@ public class Order {
 
     public String getClientEmail() {
         return clientEmail;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+
+    public boolean isCancelled() {
+        return OrderStatus.ANNULEE.equals(this.status);
     }
 }
