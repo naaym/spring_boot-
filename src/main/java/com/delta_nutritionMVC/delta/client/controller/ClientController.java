@@ -97,6 +97,9 @@ public class ClientController {
         try {
             var updatedClient = clientService.updateClientProfile(clientSession.getEmail(), request);
 
+            clientSession.setFullName(updatedClient.getFullName());
+            session.setAttribute("clientSession", clientSession);
+
             model.addAttribute("success", "Profil mis à jour avec succès");
             model.addAttribute("client", clientSession);
             model.addAttribute("profileForm", request);
