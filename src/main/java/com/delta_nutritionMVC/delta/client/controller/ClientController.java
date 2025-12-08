@@ -4,6 +4,7 @@ import com.delta_nutritionMVC.delta.auth.dtos.SignInResponse;
 import com.delta_nutritionMVC.delta.client.dtos.ClientSignUpRequest;
 import com.delta_nutritionMVC.delta.client.dtos.ClientUpdateProfilRequest;
 import com.delta_nutritionMVC.delta.client.services.ClientService;
+import com.delta_nutritionMVC.delta.landing.OrderSummary;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -46,12 +47,16 @@ public class ClientController {
     public String dashboard(HttpSession session, Model model) {
 
         SignInResponse client = (SignInResponse) session.getAttribute("clientSession");
+        OrderSummary lastOrder = (OrderSummary) session.getAttribute("lastOrder");
 
-        if (client == null) {
+        if (client == null && lastOrder == null) {
             return "redirect:/auth/login";
         }
 
-        model.addAttribute("name", client.getFullName());
+        String displayName = client != null ? client.getFullName() : lastOrder.getFullName();
+
+        model.addAttribute("name", displayName);
+        model.addAttribute("lastOrder", lastOrder);
 
         return "clients/dashboard";
     }
