@@ -8,7 +8,7 @@
 </head>
 <body class="bg-gray-50 text-gray-800">
 <nav class="bg-white shadow fixed top-0 w-full z-50">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+    <div class="max-w-screen-2xl mx-auto px-6 py-4 flex justify-between items-center">
         <h1 class="text-2xl font-bold"><a th:href="@{/home}" class="hover:text-indigo-600">Delta-nutrition</a></h1>
 
         <ul class="hidden md:flex gap-8 text-lg">
@@ -38,14 +38,14 @@
                                 </div>
                                 <form th:action="@{/home/remove-item}" method="post">
                                     <input type="hidden" name="itemId" th:value="${item.id}" />
-                                    <input type="hidden" name="redirectTo" th:value="${#httpServletRequest.requestURI + (#strings.isEmpty(#httpServletRequest.queryString) ? '' : '?' + #httpServletRequest.queryString)}" />
+                                    <input type="hidden" name="redirectTo" th:value="${currentCategoryUrl}" />
                                     <button type="submit" class="text-red-500 text-sm hover:underline">Supprimer</button>
                                 </form>
                             </div>
                             <div class="flex items-center justify-between mt-3">
                                 <form th:action="@{/home/update-item}" method="post" class="flex items-center gap-2">
                                     <input type="hidden" name="itemId" th:value="${item.id}" />
-                                    <input type="hidden" name="redirectTo" th:value="${#httpServletRequest.requestURI + (#strings.isEmpty(#httpServletRequest.queryString) ? '' : '?' + #httpServletRequest.queryString)}" />
+                                    <input type="hidden" name="redirectTo" th:value="${currentCategoryUrl}" />
                                     <input type="number" name="quantity" min="1" class="w-16 border rounded-lg px-2 py-1" th:value="${item.quantity}" />
                                     <button type="submit" class="text-indigo-600 text-sm font-semibold">Mettre à jour</button>
                                 </form>
@@ -61,7 +61,7 @@
     </div>
 </nav>
 
-<main class="max-w-7xl mx-auto px-6 pt-28 pb-16">
+<main class="max-w-screen-2xl mx-auto px-6 pt-28 pb-16">
     <div class="mb-8">
         <a th:href="@{/home}" class="text-sm text-indigo-600 hover:text-indigo-700">← Retour à l'accueil</a>
         <h1 class="text-3xl font-bold mt-2" th:text="'Découvrir: ' + ${category.name}">Catégorie</h1>
@@ -100,7 +100,7 @@
         </aside>
 
         <section class="lg:col-span-3">
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
                 <div class="bg-white rounded-2xl shadow hover:shadow-lg transition overflow-hidden" th:each="product : ${products}">
                     <div class="h-52 bg-gray-100 flex items-center justify-center">
                         <img th:if="${product.imageUrl}" th:src="${product.imageUrl}" alt="product image" class="h-full w-full object-cover" />
