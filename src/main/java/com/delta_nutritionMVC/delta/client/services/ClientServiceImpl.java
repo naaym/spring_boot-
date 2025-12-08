@@ -2,6 +2,7 @@ package com.delta_nutritionMVC.delta.client.services;
 
 import com.delta_nutritionMVC.delta.client.dtos.ClientInfoDto;
 import com.delta_nutritionMVC.delta.client.dtos.ClientSignUpRequest;
+import com.delta_nutritionMVC.delta.client.dtos.ClientUpdateProfilRequest;
 import com.delta_nutritionMVC.delta.client.dtos.SignUpResponsedto;
 import com.delta_nutritionMVC.delta.client.models.ClientEntity;
 import com.delta_nutritionMVC.delta.client.repositories.ClientRepository;
@@ -81,5 +82,45 @@ public class ClientServiceImpl implements ClientService {
                         client.getAge()
                 ))
                 .orElse(null);
+    }
+
+    @Override
+    public ClientInfoDto getClientByEmail(String email) {
+        return clientRepository.findByEmail(email)
+                .map(client -> new ClientInfoDto(
+                        client.getEmail(),
+                        client.getUserId(),
+                        client.getPhone(),
+                        client.getCityName(),
+                        client.getAddressLiv(),
+                        client.getActive(),
+                        client.getFullName(),
+                        client.getAge()
+                ))
+                .orElse(null);
+    }
+
+    @Override
+    public ClientInfoDto updateClientProfile(String email, ClientUpdateProfilRequest request) {
+        ClientEntity client = clientRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Client not found"));
+
+        client.setFullName(request.getFullName());
+        client.setPhone(request.getPhone());
+        client.setAddressLiv(request.getAddressLiv());
+        client.setCityName(request.getCityName());
+
+        ClientEntity updated = clientRepository.save(client);
+
+        return new ClientInfoDto(
+                updated.getEmail(),
+                updated.getUserId(),
+                updated.getPhone(),
+                updated.getCityName(),
+                updated.getAddressLiv(),
+                updated.getActive(),
+                updated.getFullName(),
+                updated.getAge()
+        );
     }
 }

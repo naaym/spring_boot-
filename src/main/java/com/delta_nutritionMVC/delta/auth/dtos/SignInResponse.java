@@ -9,7 +9,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SignInResponse{String message;
-    String token;
-    String role;
+public class SignInResponse {
+    private String message;
+    private String token;
+    private String role;
+    private String email;
+    private String fullName;
 }
