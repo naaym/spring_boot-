@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Commandes – Admin</title>
+</head>
+<body class="bg-gray-100">
+<div class="flex min-h-screen">
+    <aside class="w-72 bg-white shadow-xl p-6 hidden md:block">
+        <h1 class="text-2xl font-extrabold text-indigo-700 mb-10">Qowa Admin</h1>
+        <nav class="space-y-4">
+            <a href="/admins/dashboard" class="flex items-center gap-3 text-lg p-3 rounded-lg hover:bg-gray-100">📊 Dashboard</a>
+            <a href="/admins/categories" class="flex items-center gap-3 text-lg p-3 rounded-lg hover:bg-gray-100">🗂️ Catégories</a>
+            <a href="/admins/orders" class="flex items-center gap-3 text-lg p-3 rounded-lg bg-indigo-50 text-indigo-700 font-semibold">📦 Commandes</a>
+            <a href="/auth/logout" class="flex items-center gap-3 text-lg p-3 rounded-lg text-red-600 hover:bg-red-50">🚪 Déconnexion</a>
+        </nav>
+    </aside>
+
+    <main class="flex-1 p-8">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-3xl font-bold text-gray-800">Suivi des commandes</h2>
+            <div class="relative">
+                <details class="relative">
+                    <summary class="flex items-center gap-2 cursor-pointer select-none">
+                        <span class="text-2xl">🔔</span>
+                        <span class="text-sm bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full"
+                              th:text="${unreadCount} + ' nouvelle(s)'">0 nouvelle(s)</span>
+                    </summary>
+                    <div class="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-200 p-4 z-10">
+                        <div class="flex items-center justify-between mb-3">
+                            <p class="font-semibold text-gray-800">Notifications</p>
+                            <span class="text-xs text-gray-500" th:text="${unreadCount} + ' en attente'">0 en attente</span>
+                        </div>
+                        <div th:if="${#lists.isEmpty(notifications)}" class="text-sm text-gray-500">
+                            Aucune nouvelle notification.
+                        </div>
+                        <div th:each="notif : ${notifications}" class="flex items-start justify-between gap-3 py-2 border-b last:border-b-0">
+                            <div>
+                                <p class="text-sm font-medium text-gray-800" th:text="${notif.message}">Nouvelle commande</p>
+                                <p class="text-xs text-gray-500" th:text="${#temporals.format(notif.createdAt, 'dd/MM HH:mm')}">Date</p>
+                            </div>
+                            <form th:action="@{'/admins/orders/notifications/' + ${notif.id} + '/read'}" method="post">
+                                <button type="submit" class="text-xs text-indigo-600 hover:text-indigo-800">Marquer comme lu</button>
+                            </form>
+                        </div>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-2xl font-bold">Toutes les commandes</h3>
+            </div>
+
+            <div th:if="${#lists.isEmpty(orders)}" class="text-gray-600">
+                <p>Aucune commande enregistrée.</p>
+            </div>
+
+            <div th:if="${!#lists.isEmpty(orders)}" class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">#</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Client</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Téléphone</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Adresse</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Total</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Date</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Statut</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 bg-white">
+                    <tr th:each="order, iter : ${orders}">
+                        <td class="px-4 py-3 text-sm text-gray-700" th:text="${iter.index + 1}">1</td>
+                        <td class="px-4 py-3 text-sm text-gray-700" th:text="${order.fullName}">Client</td>
+                        <td class="px-4 py-3 text-sm text-gray-700" th:text="${order.phone}">00 000 000</td>
+                        <td class="px-4 py-3 text-sm text-gray-700" th:text="${order.address}">Adresse</td>
+                        <td class="px-4 py-3 text-sm font-semibold text-indigo-700" th:text="${order.total} + ' د.ت'">0 د.ت</td>
+                        <td class="px-4 py-3 text-sm text-gray-600" th:text="${#temporals.format(order.createdAt, 'dd/MM/yyyy HH:mm')}">Date</td>
+                        <td class="px-4 py-3 text-sm">
+                            <span class="px-2 py-1 rounded-full text-xs font-semibold"
+                                  th:classappend="${order.status.name() == 'ANNULEE' ? 'bg-red-100 text-red-700' : (order.status.name() == 'EN_ROUTE' ? 'bg-blue-100 text-blue-700' : 'bg-amber-100 text-amber-700')}"
+                                  th:text="${order.status.label}">Pas encore livrée</span>
+                        </td>
+                        <td class="px-4 py-3 text-sm">
+                            <form th:action="@{'/admins/orders/' + ${order.id} + '/status'}" method="post" class="flex items-center gap-2">
+                                <select name="status" class="border rounded-lg px-2 py-1 text-sm">
+                                    <option th:each="status : ${statuses}"
+                                            th:value="${status}"
+                                            th:selected="${status == order.status}"
+                                            th:text="${status.label}">Pas encore livrée</option>
+                                </select>
+                                <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-lg text-sm">Mettre à jour</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>
