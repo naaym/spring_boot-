@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Client Sign Up</title>
+</head>
+<body>
+
+<h2>Créer un compte client</h2>
+
+<div th:if="${error}">
+  <p style="color:red" th:text="${error}"></p>
+</div>
+
+<form th:action="@{/clients/signup}" th:object="${client}" method="post">
+
+  <label>Nom complet</label>
+  <input th:field="*{fullName}" />
+
+  <label>Email</label>
+  <input th:field="*{email}" />
+
+  <label>Mot de passe</label>
+  <input type="password" th:field="*{password}" />
+
+  <label>Phone</label>
+  <input th:field="*{phone}" />
+
+  <label>Adresse</label>
+  <input th:field="*{addressLiv}" />
+
+  <label>Ville</label>
+  <input th:field="*{cityName}" />
+
+  <label>Âge</label>
+  <input type="number" th:field="*{age}" />
+
+  <button type="submit">Créer le compte</button>
+</form>
+
+</body>
+</html>

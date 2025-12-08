@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Delta– Page Démo</title>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+<!-- NAVBAR -->
+<nav class="bg-white shadow fixed top-0 w-full z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <h1 class="text-2xl font-bold">Delta-nutrition</h1>
+
+        <ul class="hidden md:flex gap-8 text-lg">
+            <li><a href="#" class="hover:text-indigo-600">Accueil</a></li>
+            <li><a href="#" class="hover:text-indigo-600">Boutique</a></li>
+            <li><a href="#" class="hover:text-indigo-600">Catégories</a></li>
+            <li><a href="#" class="hover:text-indigo-600">Contact</a></li>
+        </ul>
+
+        <button class="md:hidden text-xl">☰</button>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="pt-28 pb-20 bg-gradient-to-r from-indigo-700 to-purple-700 text-white">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
+
+        <div class="flex-1">
+            <h2 class="text-4xl md:text-5xl font-extrabold leading-tight">
+                Boost Your Body.<br>
+                Boost Your Power.
+            </h2>
+            <p class="mt-4 text-lg text-indigo-100">
+                Suppléments premium, accessoires de sport et programmes pour atteindre vos objectifs.
+            </p>
+
+            <button class="mt-6 bg-white text-indigo-700 px-6 py-3 rounded-xl font-bold shadow hover:bg-indigo-100">
+                Voir la boutique →
+            </button>
+        </div>
+
+        <div class="flex-1 flex justify-center">
+            <div class="w-64 h-64 bg-white/20 rounded-2xl backdrop-blur-md"></div>
+        </div>
+    </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="py-16">
+    <div class="max-w-7xl mx-auto px-6">
+        <h2 class="text-3xl font-bold mb-10">Catégories populaires</h2>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div class="bg-white shadow p-6 rounded-xl text-center hover:-translate-y-1 hover:shadow-lg transition cursor-pointer">
+                <p class="mt-3 font-semibold">Protéines</p>
+            </div>
+            <div class="bg-white shadow p-6 rounded-xl text-center hover:-translate-y-1 hover:shadow-lg transition cursor-pointer">
+                <p class="mt-3 font-semibold">Créatine</p>
+            </div>
+            <div class="bg-white shadow p-6 rounded-xl text-center hover:-translate-y-1 hover:shadow-lg transition cursor-pointer">
+                ️<p class="mt-3 font-semibold">Accessoires</p>
+            </div>
+            <div class="bg-white shadow p-6 rounded-xl text-center hover:-translate-y-1 hover:shadow-lg transition cursor-pointer">
+                <p class="mt-3 font-semibold">Vêtements</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- BEST SELLERS -->
+<section class="py-16 bg-gray-100">
+    <div class="max-w-7xl mx-auto px-6">
+        <h2 class="text-3xl font-bold mb-10">Best Sellers</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+            <!-- PRODUCT CARD -->
+            <div class="bg-white p-5 rounded-xl shadow hover:shadow-xl transition">
+                <div class="h-56 bg-gray-200 rounded-xl"></div>
+                <h3 class="text-xl font-bold mt-4">Produit 1</h3>
+
+                <p class="mt-2">
+                    <span class="line-through text-gray-500">65 د.ت</span>
+                    <span class="font-bold text-indigo-600 ml-2">49 د.ت</span>
+                </p>
+
+                <button class="mt-4 w-full bg-indigo-600 text-white py-2 rounded-xl hover:bg-indigo-700">
+                    Ajouter au panier
+                </button>
+            </div>
+
+            <!-- PRODUCT CARD -->
+            <div class="bg-white p-5 rounded-xl shadow hover:shadow-xl transition">
+                <div class="h-56 bg-gray-200 rounded-xl"></div>
+                <h3 class="text-xl font-bold mt-4">Produit 2</h3>
+
+                <p class="mt-2 font-bold text-indigo-600">89 د.ت</p>
+
+                <button class="mt-4 w-full bg-indigo-600 text-white py-2 rounded-xl hover:bg-indigo-700">
+                    Ajouter au panier
+                </button>
+            </div>
+
+            <!-- PRODUCT CARD -->
+            <div class="bg-white p-5 rounded-xl shadow hover:shadow-xl transition">
+                <div class="h-56 bg-gray-200 rounded-xl"></div>
+                <h3 class="text-xl font-bold mt-4">Produit 3</h3>
+
+                <p class="mt-2 font-bold text-indigo-600">129 د.ت</p>
+
+                <button class="mt-4 w-full bg-indigo-600 text-white py-2 rounded-xl hover:bg-indigo-700">
+                    Ajouter au panier
+                </button>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ADVANTAGES -->
+<section class="py-16">
+    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8 text-center">
+
+        <div class="bg-white p-8 rounded-xl shadow">
+            <h4 class="text-xl font-bold mb-2"> Livraison rapide</h4>
+            <p class="text-gray-600">Commandez avant 16h → livraison le lendemain</p>
+        </div>
+
+        <div class="bg-white p-8 rounded-xl shadow">
+            <h4 class="text-xl font-bold mb-2"> Paiement sécurisé</h4>
+            <p class="text-gray-600">100% sécurisé – carte bancaire ou à la livraison</p>
+        </div>
+
+        <div class="bg-white p-8 rounded-xl shadow">
+            <h4 class="text-xl font-bold mb-2"> Clients satisfaits</h4>
+            <p class="text-gray-600">Des milliers d'avis positifs</p>
+        </div>
+
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-gray-900 text-gray-300 py-8 text-center">
+    <p class="text-lg font-semibold">Qowa – قوّة – 2025</p>
+    <p class="text-sm mt-2">Démo éducative Tailwind CSS</p>
+</footer>
+
+</body>
+</html>
