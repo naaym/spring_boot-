@@ -4,23 +4,27 @@ import com.delta_nutritionMVC.delta.auth.dtos.SignInResponse;
 import com.delta_nutritionMVC.delta.client.dtos.ClientSignUpRequest;
 import com.delta_nutritionMVC.delta.client.dtos.ClientUpdateProfilRequest;
 import com.delta_nutritionMVC.delta.client.services.ClientService;
-import com.delta_nutritionMVC.delta.landing.models.OrderSummary;
-
+import com.delta_nutritionMVC.delta.landing.models.Order;
+import com.delta_nutritionMVC.delta.landing.services.CheckoutService;
+import com.delta_nutritionMVC.delta.landing.services.OrderService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 public class ClientController {
 
     private final ClientService clientService;
+    private final CheckoutService checkoutService;
+    private final OrderService orderService;
 
     @GetMapping("/clients/signup")
     public String showSignupForm(Model model) {
@@ -43,20 +47,27 @@ public class ClientController {
 
         return "auth/login";
     }
+
     @GetMapping("/clients/dashboard")
     public String dashboard(HttpSession session, Model model) {
-
         SignInResponse client = (SignInResponse) session.getAttribute("clientSession");
-        OrderSummary lastOrder = (OrderSummary) session.getAttribute("lastOrder");
 
-        if (client == null && lastOrder == null) {
+        Order lastOrderFromSession = checkoutService.loadLastOrderFromSession(session);
+        List<Order> recentOrders = orderService.fetchLatestOrders(2);
+        List<Order> allOrders = orderService.findAllOrdered();
+
+        if (client == null && lastOrderFromSession == null && recentOrders.isEmpty()) {
             return "redirect:/auth/login";
         }
 
-        String displayName = client != null ? client.getFullName() : lastOrder.getFullName();
+        String displayName = client != null
+                ? client.getFullName()
+                : (lastOrderFromSession != null ? lastOrderFromSession.getFullName() : "Client");
 
         model.addAttribute("name", displayName);
-        model.addAttribute("lastOrder", lastOrder);
+        model.addAttribute("recentOrders", recentOrders);
+        model.addAttribute("lastOrder", recentOrders.isEmpty() ? lastOrderFromSession : recentOrders.get(0));
+        model.addAttribute("orders", allOrders);
 
         return "clients/dashboard";
     }
@@ -119,4 +130,3 @@ public class ClientController {
         }
     }
 }
-

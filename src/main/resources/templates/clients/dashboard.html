@@ -20,7 +20,7 @@
             <a href="#" class="flex items-center gap-3 text-lg p-3 rounded-lg bg-indigo-50 text-indigo-700 font-semibold">
                  Dashboard
             </a>
-            <a href="#" class="flex items-center gap-3 text-lg p-3 rounded-lg hover:bg-gray-100">
+            <a href="#orders" class="flex items-center gap-3 text-lg p-3 rounded-lg hover:bg-gray-100">
                  Mes commandes
             </a>
             <a href="#" class="flex items-center gap-3 text-lg p-3 rounded-lg hover:bg-gray-100">
@@ -65,7 +65,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
             <div class="bg-white p-6 rounded-xl shadow">
                 <h3 class="text-gray-600">Commandes totales</h3>
-                <p class="text-3xl font-bold mt-2">12</p>
+                <p class="text-3xl font-bold mt-2" th:text="${orders != null} ? ${orders.size()} : 0">12</p>
             </div>
 
             <div class="bg-white p-6 rounded-xl shadow">
@@ -75,45 +75,86 @@
 
             <div class="bg-white p-6 rounded-xl shadow">
                 <h3 class="text-gray-600">Dépenses totales</h3>
-                <p class="text-3xl font-bold mt-2 text-green-600">890 د.ت</p>
+                <p class="text-3xl font-bold mt-2 text-green-600" th:text="${lastOrder != null} ? ${lastOrder.total} + ' د.ت' : '0 د.ت'">890 د.ت</p>
             </div>
         </div>
 
         <!-- LAST ORDERS -->
         <div class="bg-white p-6 rounded-xl shadow mb-10">
-            <h3 class="text-2xl font-bold mb-4"> Dernière commande</h3>
+            <h3 class="text-2xl font-bold mb-4">Dernières commandes</h3>
 
-            <div th:if="${lastOrder} != null" class="space-y-4">
-                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    <div>
-                        <p class="text-gray-700"><span class="font-semibold">Client :</span> <span th:text="${lastOrder.fullName}">Nom</span></p>
-                        <p class="text-gray-700"><span class="font-semibold">Téléphone :</span> <span th:text="${lastOrder.phone}">00 000 000</span></p>
-                        <p class="text-gray-700"><span class="font-semibold">Adresse de livraison :</span> <span th:text="${lastOrder.address}">Adresse</span></p>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-gray-600">Montant total</p>
-                        <p class="text-3xl font-bold text-indigo-700" th:text="${lastOrder.total} + ' د.ت'">0 د.ت</p>
-                    </div>
-                </div>
+            <div th:if="${#lists.isEmpty(recentOrders)}" class="text-gray-600">
+                <p>Aucune commande récente.</p>
+            </div>
 
-                <div class="border-t pt-4">
-                    <h4 class="font-semibold mb-2">Produits</h4>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4" th:if="${!#lists.isEmpty(recentOrders)}">
+                <div class="border rounded-lg p-4" th:each="order : ${recentOrders}">
+                    <div class="flex flex-col gap-2 mb-2">
+                        <p class="text-gray-700"><span class="font-semibold">Client :</span> <span th:text="${order.fullName}">Nom</span></p>
+                        <p class="text-gray-700"><span class="font-semibold">Téléphone :</span> <span th:text="${order.phone}">00 000 000</span></p>
+                        <p class="text-gray-700"><span class="font-semibold">Adresse de livraison :</span> <span th:text="${order.address}">Adresse</span></p>
+                        <p class="text-gray-500 text-sm" th:text="${#temporals.format(order.createdAt, 'dd/MM/yyyy HH:mm')}">Date</p>
+                    </div>
+
+                    <div class="flex justify-between items-center mb-3">
+                        <h4 class="font-semibold">Articles</h4>
+                        <p class="text-lg font-bold text-indigo-700" th:text="${order.total} + ' د.ت'">0 د.ت</p>
+                    </div>
+
                     <div class="space-y-2">
-                        <div class="flex justify-between items-center" th:each="item : ${lastOrder.items}">
+                        <div class="flex justify-between items-center" th:each="item : ${order.items}">
                             <div>
-                                <p class="font-semibold" th:text="${item.product.name}">Produit</p>
+                                <p class="font-semibold" th:text="${item.product != null} ? ${item.product.name} : 'Produit'">Produit</p>
                                 <p class="text-sm text-gray-600" th:text="'Quantité : ' + ${item.quantity}"></p>
                             </div>
-                            <p class="font-semibold text-indigo-700" th:text="${item.totalPrice} + ' د.ت'">0 د.ت</p>
+                            <p class="font-semibold text-indigo-700" th:text="${item.lineTotal} + ' د.ت'">0 د.ت</p>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div th:if="${lastOrder} == null" class="text-gray-600">
-                <p>Aucune commande récente.</p>
-            </div>
         </div>
+
+        <!-- ORDERS TABLE -->
+        <section id="orders" class="bg-white p-6 rounded-xl shadow mb-10">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-2xl font-bold">Mes commandes</h3>
+            </div>
+
+            <div th:if="${#lists.isEmpty(orders)}" class="text-gray-600">
+                <p>Aucune commande enregistrée pour le moment.</p>
+            </div>
+
+            <div th:if="${!#lists.isEmpty(orders)}" class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">#</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Client</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Téléphone</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Adresse</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Articles</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Total</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Date</th>
+                    </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 bg-white">
+                    <tr th:each="order, iter : ${orders}">
+                        <td class="px-4 py-3 text-sm text-gray-700" th:text="${iter.index + 1}">1</td>
+                        <td class="px-4 py-3 text-sm text-gray-700" th:text="${order.fullName}">Client</td>
+                        <td class="px-4 py-3 text-sm text-gray-700" th:text="${order.phone}">00 000 000</td>
+                        <td class="px-4 py-3 text-sm text-gray-700" th:text="${order.address}">Adresse</td>
+                        <td class="px-4 py-3 text-sm text-gray-700">
+                            <ul class="list-disc list-inside space-y-1">
+                                <li th:each="item : ${order.items}" th:text="${(item.product != null ? item.product.name : 'Produit')} + ' x' + ${item.quantity}">Produit</li>
+                            </ul>
+                        </td>
+                        <td class="px-4 py-3 text-sm font-semibold text-indigo-700" th:text="${order.total} + ' د.ت'">0 د.ت</td>
+                        <td class="px-4 py-3 text-sm text-gray-600" th:text="${#temporals.format(order.createdAt, 'dd/MM/yyyy HH:mm')}">Date</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
 
         <!-- RECOMMENDATIONS -->
         <div>

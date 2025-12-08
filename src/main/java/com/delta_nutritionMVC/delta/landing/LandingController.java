@@ -102,7 +102,7 @@ public class LandingController {
             return "landing/checkout";
         }
 
-        checkoutService.prepareOrder(form, session);
+        checkoutService.finalizeOrder(form, session);
         redirectAttributes.addFlashAttribute("orderSuccess", "Votre commande a été transmise. Merci !");
         return "redirect:/clients/dashboard";
     }
