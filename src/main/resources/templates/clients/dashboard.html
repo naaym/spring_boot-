@@ -65,7 +65,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
             <div class="bg-white p-6 rounded-xl shadow">
                 <h3 class="text-gray-600">Commandes totales</h3>
-                <p class="text-3xl font-bold mt-2" th:text="${orders != null} ? ${orders.size()} : 0">12</p>
+                <p class="text-3xl font-bold mt-2" th:text="${orders != null ? orders.size() : 0}">12</p>
             </div>
 
             <div class="bg-white p-6 rounded-xl shadow">
@@ -75,7 +75,7 @@
 
             <div class="bg-white p-6 rounded-xl shadow">
                 <h3 class="text-gray-600">Dépenses totales</h3>
-                <p class="text-3xl font-bold mt-2 text-green-600" th:text="${totalSpent != null} ? ${totalSpent} + ' د.ت' : '0 د.ت'">890 د.ت</p>
+                <p class="text-3xl font-bold mt-2 text-green-600" th:text="${totalSpent != null ? totalSpent + ' د.ت' : '0 د.ت'}">890 د.ت</p>
             </div>
         </div>
 
@@ -96,23 +96,23 @@
                         <div class="flex items-center gap-3">
                             <p class="text-gray-500 text-sm" th:text="${#temporals.format(order.createdAt, 'dd/MM/yyyy HH:mm')}">Date</p>
                             <span class="px-2 py-1 rounded-full text-xs font-semibold"
-                                  th:classappend="${order.status.name() == 'ANNULEE'} ? 'bg-red-100 text-red-700' : (order.status.name() == 'EN_ROUTE' ? 'bg-blue-100 text-blue-700' : 'bg-amber-100 text-amber-700')"
+                                  th:classappend="${order.status.name() == 'ANNULEE' ? 'bg-red-100 text-red-700' : (order.status.name() == 'EN_ROUTE' ? 'bg-blue-100 text-blue-700' : 'bg-amber-100 text-amber-700')}"
                                   th:text="${order.status.label}">Pas encore livrée</span>
                         </div>
                     </div>
 
-                    <div class="flex justify-between items-center mb-3">
+                        <div class="flex justify-between items-center mb-3">
                         <h4 class="font-semibold">Articles</h4>
-                        <p class="text-lg font-bold text-indigo-700" th:text="${order.total} + ' د.ت'">0 د.ت</p>
+                        <p class="text-lg font-bold text-indigo-700" th:text="${order.total + ' د.ت'}">0 د.ت</p>
                     </div>
 
                     <div class="space-y-2">
                         <div class="flex justify-between items-center" th:each="item : ${order.items}">
                             <div>
-                                <p class="font-semibold" th:text="${item.product != null} ? ${item.product.name} : 'Produit'">Produit</p>
-                                <p class="text-sm text-gray-600" th:text="'Quantité : ' + ${item.quantity}"></p>
+                                <p class="font-semibold" th:text="${item.product != null ? item.product.name : 'Produit'}">Produit</p>
+                                <p class="text-sm text-gray-600" th:text="${'Quantité : ' + item.quantity}"></p>
                             </div>
-                            <p class="font-semibold text-indigo-700" th:text="${item.lineTotal} + ' د.ت'">0 د.ت</p>
+                            <p class="font-semibold text-indigo-700" th:text="${item.lineTotal + ' د.ت'}">0 د.ت</p>
                         </div>
                     </div>
                 </div>
