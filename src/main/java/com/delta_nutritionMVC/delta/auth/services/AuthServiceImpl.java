@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 public class AuthServiceImpl implements AuthService {
 
     private final AuthenticationManager manager;
-    private final JwtService jwtService;
     private final UserRepository userRepository;
 
     @Override
@@ -34,12 +33,10 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(()-> new RuntimeException("User not found"));
 
 
-        String token = jwtService.generateToken(user);
 
 
         return new SignInResponse(
                 "User Authenticated Successfully",
-                token,
                 user.getRole().name(),
                 user.getEmail(),
                 user.getFullName()

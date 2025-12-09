@@ -11,7 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class SignInResponse {
     private String message;
-    private String token;
     private String role;
     private String email;
     private String fullName;
