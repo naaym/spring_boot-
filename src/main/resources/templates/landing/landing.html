@@ -7,167 +7,243 @@
     <title>Delta– Page Démo</title>
 </head>
 
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-slate-950 text-slate-100">
 
 <!-- NAVBAR -->
-<nav class="bg-white shadow fixed top-0 w-full z-50">
+<nav class="bg-slate-900/80 backdrop-blur border-b border-slate-800 fixed top-0 w-full z-50">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        <h1 class="text-2xl font-bold">Delta-nutrition</h1>
+        <div class="flex items-center gap-2">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center text-white font-black">Δ</div>
+            <div>
+                <p class="text-xs uppercase tracking-widest text-slate-400">Delta</p>
+                <h1 class="text-xl font-semibold">Performance & Fuel</h1>
+            </div>
+        </div>
 
-        <ul class="hidden md:flex gap-8 text-lg">
-            <li><a href="#" class="hover:text-indigo-600">Accueil</a></li>
-            <li><a href="#" class="hover:text-indigo-600">Boutique</a></li>
-            <li><a th:href="@{/home/checkout}" class="hover:text-indigo-600">Checkout</a></li>
-            <li><a href="#" class="hover:text-indigo-600">Contact</a></li>
+        <ul class="hidden md:flex gap-8 text-sm font-semibold text-slate-300">
+            <li><a href="#" class="hover:text-white">Accueil</a></li>
+            <li><a href="#categories" class="hover:text-white">Catégories</a></li>
+            <li><a href="#best-sellers" class="hover:text-white">Produits</a></li>
+            <li><a th:href="@{/home/checkout}" class="hover:text-white">Checkout</a></li>
         </ul>
 
-        <div class="flex items-center gap-6">
+        <div class="flex items-center gap-4">
             <details class="relative" aria-label="Panier">
                 <summary class="list-none flex items-center cursor-pointer gap-2">
                     <div class="relative">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7 text-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7 text-white">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                         </svg>
-                        <span class="absolute -top-2 -right-2 bg-blue-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center" th:text="${cartItemCount}">0</span>
+                        <span class="absolute -top-2 -right-2 bg-cyan-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center" th:text="${cartItemCount}">0</span>
                     </div>
                 </summary>
-                <div class="absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-lg border p-4 space-y-3">
-                    <p class="text-lg font-semibold">Panier</p>
-                    <div th:if="${#lists.isEmpty(cart.items)}" class="text-sm text-gray-500">Votre panier est vide.</div>
+                <div class="absolute right-0 mt-3 w-80 bg-slate-900 rounded-2xl shadow-2xl border border-slate-800 p-4 space-y-3">
+                    <p class="text-lg font-semibold text-white">Panier</p>
+                    <div th:if="${#lists.isEmpty(cart.items)}" class="text-sm text-slate-400">Votre panier est vide.</div>
                     <div th:if="${!#lists.isEmpty(cart.items)}" class="space-y-3 max-h-64 overflow-y-auto">
-                        <div class="border rounded-lg p-3" th:each="item : ${cart.items}">
-                            <div class="flex justify-between">
+                        <div class="border border-slate-800 rounded-lg p-3" th:each="item : ${cart.items}">
+                            <div class="flex justify-between gap-3">
                                 <div>
                                     <p class="font-semibold" th:text="${item.product.name}">Produit</p>
-                                    <p class="text-xs text-gray-500" th:text="${item.product.description}">Description</p>
+                                    <p class="text-xs text-slate-400" th:text="${item.product.description}">Description</p>
                                 </div>
                                 <form th:action="@{/home/remove-item}" method="post">
                                     <input type="hidden" name="itemId" th:value="${item.id}" />
-                                    <button type="submit" class="text-red-500 text-sm hover:underline">Supprimer</button>
+                                    <button type="submit" class="text-rose-400 text-sm hover:text-rose-300">Supprimer</button>
                                 </form>
                             </div>
                             <div class="flex items-center justify-between mt-3">
                                 <form th:action="@{/home/update-item}" method="post" class="flex items-center gap-2">
                                     <input type="hidden" name="itemId" th:value="${item.id}" />
-                                    <input type="number" name="quantity" min="1" class="w-16 border rounded-lg px-2 py-1" th:value="${item.quantity}" />
-                                    <button type="submit" class="text-indigo-600 text-sm font-semibold">Mettre à jour</button>
+                                    <input type="number" name="quantity" min="1" class="w-16 bg-slate-800 border border-slate-700 rounded-lg px-2 py-1 text-white" th:value="${item.quantity}" />
+                                    <button type="submit" class="text-cyan-400 text-sm font-semibold hover:text-cyan-300">Mettre à jour</button>
                                 </form>
-                                <p class="font-semibold text-indigo-700" th:text="${item.totalPrice} + ' د.ت'">0 د.ت</p>
+                                <p class="font-semibold text-indigo-300" th:text="${item.totalPrice} + ' د.ت'">0 د.ت</p>
                             </div>
                         </div>
                     </div>
-                    <a th:href="@{/home/checkout}" class="block text-center bg-indigo-600 text-white py-2 rounded-xl hover:bg-indigo-700" th:classappend="${#lists.isEmpty(cart.items)} ? ' pointer-events-none opacity-50' : ''">Passer au checkout</a>
+                    <a th:href="@{/home/checkout}" class="block text-center bg-gradient-to-r from-indigo-500 to-cyan-400 text-white py-2 rounded-xl hover:from-indigo-400 hover:to-cyan-300" th:classappend="${#lists.isEmpty(cart.items)} ? ' pointer-events-none opacity-50' : ''">Passer au checkout</a>
                 </div>
             </details>
-            <button class="md:hidden text-xl">☰</button>
+            <a th:href="@{/home/checkout}" class="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800 text-sm font-semibold hover:bg-slate-700 border border-slate-700">Espace client</a>
+            <button class="md:hidden text-xl text-white">☰</button>
         </div>
     </div>
 </nav>
 
-<div class="max-w-4xl mx-auto mt-24 px-6" th:if="${message}">
-    <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg" th:text="${message}"></div>
+<div class="max-w-5xl mx-auto mt-28 px-6" th:if="${message}">
+    <div class="bg-emerald-900/60 border border-emerald-700 text-emerald-100 px-4 py-3 rounded-lg" th:text="${message}"></div>
 </div>
 
-<div class="max-w-4xl mx-auto mt-24 px-6" th:if="${error}">
-    <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg" th:text="${error}"></div>
+<div class="max-w-5xl mx-auto mt-4 px-6" th:if="${error}">
+    <div class="bg-rose-900/60 border border-rose-700 text-rose-50 px-4 py-3 rounded-lg" th:text="${error}"></div>
 </div>
 
 <!-- HERO -->
-<section class="pt-28 pb-20 bg-gradient-to-r from-indigo-700 to-purple-700 text-white">
-    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
+<section class="pt-24 pb-20 bg-gradient-to-br from-slate-900 via-slate-950 to-slate-950 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_20%_20%,rgba(79,70,229,0.3),transparent_35%),radial-gradient(circle_at_80%_10%,rgba(14,165,233,0.25),transparent_30%),radial-gradient(circle_at_60%_80%,rgba(251,191,36,0.15),transparent_25%)]"></div>
+    <div class="max-w-7xl mx-auto px-6 relative z-10 flex flex-col lg:flex-row items-center gap-12">
 
-        <div class="flex-1">
-            <h2 class="text-4xl md:text-5xl font-extrabold leading-tight">
-                Boost Your Body.<br>
-                Boost Your Power.
+        <div class="flex-1 space-y-6">
+            <div class="inline-flex items-center gap-2 bg-white/5 border border-white/10 text-slate-200 px-4 py-2 rounded-full text-sm">
+                <span class="w-2 h-2 bg-emerald-400 rounded-full"></span> Nouveaux combos protéines + accessoires 2025
+            </div>
+            <h2 class="text-4xl md:text-5xl font-black leading-tight">
+                Alimente ta force.<br>
+                Vise la prochaine perf.
             </h2>
-            <p class="mt-4 text-lg text-indigo-100">
-                Suppléments premium, accessoires de sport et programmes pour atteindre vos objectifs.
+            <p class="text-lg text-slate-300 max-w-2xl">
+                Packs protéines, barres énergétiques, shakers premium et accessoires pour musculation, cross-training et running. Livraison express en 24h.
             </p>
 
-            <button class="mt-6 bg-white text-indigo-700 px-6 py-3 rounded-xl font-bold shadow hover:bg-indigo-100">
-                Voir la boutique →
-            </button>
+            <div class="flex flex-wrap gap-4">
+                <a href="#best-sellers" class="px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-rose-500 font-semibold shadow-lg shadow-indigo-900/50">Découvrir les best sellers</a>
+                <a href="#categories" class="px-6 py-3 rounded-xl border border-slate-700 text-slate-200 font-semibold hover:bg-white/5">Explorer les catégories</a>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-4">
+                <div class="bg-white/5 border border-white/10 rounded-xl p-4">
+                    <p class="text-3xl font-black">24h</p>
+                    <p class="text-sm text-slate-300">Livraison rapide</p>
+                </div>
+                <div class="bg-white/5 border border-white/10 rounded-xl p-4">
+                    <p class="text-3xl font-black">+1500</p>
+                    <p class="text-sm text-slate-300">Clients sportifs satisfaits</p>
+                </div>
+                <div class="bg-white/5 border border-white/10 rounded-xl p-4">
+                    <p class="text-3xl font-black">4.9★</p>
+                    <p class="text-sm text-slate-300">Avis vérifiés</p>
+                </div>
+            </div>
         </div>
 
         <div class="flex-1 flex justify-center">
-            <div class="w-64 h-64 bg-white/20 rounded-2xl backdrop-blur-md"></div>
+            <div class="relative w-full max-w-md">
+                <div class="absolute -inset-6 bg-gradient-to-br from-indigo-500/30 to-cyan-400/20 blur-3xl rounded-full"></div>
+                <div class="relative bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl">
+                    <div class="aspect-[4/5] rounded-2xl bg-[url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=700&q=80')] bg-cover bg-center"></div>
+                    <div class="absolute -bottom-6 right-6 bg-white text-slate-900 px-4 py-2 rounded-xl font-semibold shadow-lg">Collection Pro</div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
-<!-- CATEGORIES -->
-<section class="py-16">
-    <div class="max-w-7xl mx-auto px-6">
-        <h2 class="text-3xl font-bold mb-10">Catégories populaires</h2>
+<!-- BRANDS / SOCIAL PROOF -->
+<section class="py-8 bg-slate-900/60 border-y border-slate-800">
+    <div class="max-w-6xl mx-auto px-6 flex flex-wrap items-center justify-center gap-8 text-slate-400 uppercase tracking-[0.2em] text-xs">
+        <span class="bg-white/5 px-4 py-2 rounded-lg">crossfit</span>
+        <span class="bg-white/5 px-4 py-2 rounded-lg">running</span>
+        <span class="bg-white/5 px-4 py-2 rounded-lg">musculation</span>
+        <span class="bg-white/5 px-4 py-2 rounded-lg">nutrition</span>
+        <span class="bg-white/5 px-4 py-2 rounded-lg">recovery</span>
+    </div>
+</section>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+<!-- CATEGORIES -->
+<section id="categories" class="py-16 bg-slate-950">
+    <div class="max-w-7xl mx-auto px-6 space-y-6">
+        <div class="flex items-start justify-between flex-wrap gap-4">
+            <div>
+                <p class="text-sm text-cyan-300 font-semibold">Boutique sport</p>
+                <h2 class="text-3xl font-bold text-white">Catégories populaires</h2>
+                <p class="text-slate-400">Shakers, straps, protéines, snacks énergétiques et équipements d'entraînement.</p>
+            </div>
+            <a href="#best-sellers" class="text-sm font-semibold text-cyan-300 hover:text-cyan-200">Voir les best sellers →</a>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
             <a th:each="cat : ${categories}"
                th:href="@{/home/categories/{categoryId}(categoryId=${cat.id})}"
-               class="bg-white shadow p-6 rounded-xl text-center hover:-translate-y-1 hover:shadow-lg transition cursor-pointer block">
-                <div class="h-28 rounded-lg bg-gray-100 mb-4 overflow-hidden flex items-center justify-center">
-                    <img th:if="${cat.imageUrl}" th:src="${cat.imageUrl}" alt="category" class="w-full h-full object-cover" />
-                    <span th:if="${cat.imageUrl == null}" class="text-gray-500">Découvrir</span>
+               class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-800 shadow-lg hover:-translate-y-1 transition transform">
+                <div class="h-36 bg-slate-800/60 overflow-hidden">
+                    <img th:if="${cat.imageUrl}" th:src="${cat.imageUrl}" alt="category" class="w-full h-full object-cover group-hover:scale-105 transition" />
+                    <div th:if="${cat.imageUrl == null}" class="w-full h-full flex items-center justify-center text-slate-400">Découvrir</div>
                 </div>
-                <p class="mt-3 font-semibold" th:text="${cat.name}">Catégorie</p>
+                <div class="p-4 flex items-center justify-between">
+                    <p class="font-semibold text-white" th:text="${cat.name}">Catégorie</p>
+                    <span class="text-xs px-3 py-1 rounded-full bg-white/10 text-cyan-200">Voir</span>
+                </div>
             </a>
         </div>
     </div>
 </section>
 
 <!-- BEST SELLERS -->
-<section class="py-16 bg-gray-100">
-    <div class="max-w-7xl mx-auto px-6">
-        <h2 class="text-3xl font-bold mb-10">Best Sellers</h2>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-white p-5 rounded-xl shadow hover:shadow-xl transition" th:each="product : ${products}">
-                <div class="h-56 bg-gray-200 rounded-xl flex items-center justify-center text-gray-500">
-                    <span th:text="${product.description}">Supplément</span>
-                </div>
-                <h3 class="text-xl font-bold mt-4" th:text="${product.name}">Produit</h3>
-
-                <p class="mt-2">
-                    <span class="line-through text-gray-500" th:if="${product.originalPrice != null}" th:text="${product.originalPrice} + ' د.ت'">65 د.ت</span>
-                    <span class="font-bold text-indigo-600 ml-2" th:text="${product.price} + ' د.ت'">49 د.ت</span>
-                </p>
-
-                <form th:action="@{/home/add-to-cart}" method="post" class="mt-4">
-                    <input type="hidden" name="productId" th:value="${product.id}" />
-                    <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-xl hover:bg-indigo-700">Ajouter au panier</button>
-                </form>
+<section id="best-sellers" class="py-16 bg-gradient-to-b from-slate-950 to-slate-900">
+    <div class="max-w-7xl mx-auto px-6 space-y-8">
+        <div class="flex items-center justify-between flex-wrap gap-4">
+            <div>
+                <p class="text-sm text-indigo-300 font-semibold">Top ventes</p>
+                <h2 class="text-3xl font-bold text-white">Boosters, whey & accessoires</h2>
+                <p class="text-slate-400">Des produits validés par les coachs pour vos entraînements intensifs.</p>
             </div>
+            <a th:href="@{/home/checkout}" class="px-5 py-3 rounded-xl bg-white text-slate-900 font-semibold shadow hover:shadow-lg">Voir le panier</a>
+        </div>
 
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl hover:-translate-y-1 hover:shadow-2xl transition" th:each="product : ${products}">
+                <div class="relative rounded-xl overflow-hidden bg-slate-800 h-56">
+                    <div class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold bg-white/80 text-slate-900">Nouveau</div>
+                    <div class="w-full h-full flex items-center justify-center text-slate-400">
+                        <span th:text="${product.description}">Supplément</span>
+                    </div>
+                </div>
+                <div class="mt-4 space-y-2">
+                    <h3 class="text-xl font-bold text-white" th:text="${product.name}">Produit</h3>
+                    <div class="flex items-center gap-2 text-amber-300 text-sm">
+                        <span>★★★★★</span><span class="text-slate-400">(4.9)</span>
+                    </div>
+                    <p class="mt-1">
+                        <span class="line-through text-slate-500" th:if="${product.originalPrice != null}" th:text="${product.originalPrice} + ' د.ت'">65 د.ت</span>
+                        <span class="font-bold text-cyan-300 ml-2" th:text="${product.price} + ' د.ت'">49 د.ت</span>
+                    </p>
+                    <form th:action="@{/home/add-to-cart}" method="post" class="pt-2">
+                        <input type="hidden" name="productId" th:value="${product.id}" />
+                        <button type="submit" class="w-full bg-gradient-to-r from-indigo-500 to-cyan-400 text-white py-3 rounded-xl font-semibold hover:from-indigo-400 hover:to-cyan-300">Ajouter au panier</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
 <!-- ADVANTAGES -->
-<section class="py-16">
-    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8 text-center">
-
-        <div class="bg-white p-8 rounded-xl shadow">
-            <h4 class="text-xl font-bold mb-2"> Livraison rapide</h4>
-            <p class="text-gray-600">Commandez avant 16h → livraison le lendemain</p>
+<section class="py-16 bg-slate-950">
+    <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-4 gap-6">
+        <div class="lg:col-span-2 bg-gradient-to-r from-indigo-600 to-cyan-500 rounded-3xl p-10 shadow-2xl">
+            <h3 class="text-3xl font-black text-white">Livraison éclair & service premium</h3>
+            <p class="text-slate-100 mt-4 max-w-2xl">Des stocks contrôlés chaque semaine, un suivi précis et des experts dispo pour optimiser vos programmes.</p>
+            <div class="mt-6 flex flex-wrap gap-3 text-sm font-semibold text-white">
+                <span class="px-3 py-2 rounded-full bg-white/20">Conseils nutrition</span>
+                <span class="px-3 py-2 rounded-full bg-white/20">Programme offert</span>
+                <span class="px-3 py-2 rounded-full bg-white/20">Retour facile</span>
+            </div>
         </div>
-
-        <div class="bg-white p-8 rounded-xl shadow">
-            <h4 class="text-xl font-bold mb-2"> Paiement sécurisé</h4>
-            <p class="text-gray-600">100% sécurisé – carte bancaire ou à la livraison</p>
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 text-center">
+            <h4 class="text-xl font-bold mb-2 text-white">Livraison rapide</h4>
+            <p class="text-slate-300">Commandez avant 16h → livraison le lendemain</p>
         </div>
-
-        <div class="bg-white p-8 rounded-xl shadow">
-            <h4 class="text-xl font-bold mb-2"> Clients satisfaits</h4>
-            <p class="text-gray-600">Des milliers d'avis positifs</p>
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 text-center">
+            <h4 class="text-xl font-bold mb-2 text-white">Paiement sécurisé</h4>
+            <p class="text-slate-300">Carte, cash ou paiement à la livraison sécurisé</p>
         </div>
-
     </div>
 </section>
 
 <!-- FOOTER -->
-<footer class="bg-gray-900 text-gray-300 py-8 text-center">
-    <p class="text-lg font-semibold">Qowa – قوّة – 2025</p>
-    <p class="text-sm mt-2">Démo éducative Tailwind CSS</p>
+<footer class="bg-slate-900 text-slate-300 py-10">
+    <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+            <p class="text-lg font-semibold">Delta Performance</p>
+            <p class="text-sm text-slate-400">Nutrition sportive, accessoires et support personnalisé.</p>
+        </div>
+        <div class="flex gap-3 text-sm text-slate-400">
+            <span>Conditions</span>
+            <span>Support</span>
+            <span>Contact</span>
+        </div>
+    </div>
 </footer>
 
 </body>
