@@ -85,7 +85,7 @@
                         <tr th:each="order : ${recentOrders}" class="border-b last:border-0">
                             <td class="py-2 font-semibold" th:text="${order.fullName}"></td>
                             <td class="py-2"
-                                th:text="${order.total != null ? #numbers.formatDecimal(order.total, 1, 2, 'POINT', 'NONE') : '0.00'} + ' د.ت'">
+                                th:text="${order.total != null ? #numbers.formatDecimal(order.total, 1, 'NONE', 2, 'POINT') : '0.00'} + ' د.ت'">
                             </td>
                             <td class="py-2">
                                 <span class="px-3 py-1 rounded-full text-xs"

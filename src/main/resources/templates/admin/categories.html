@@ -145,8 +145,8 @@
                     <h4 class="font-semibold" th:text="${product.name}"></h4>
                     <p class="text-sm text-gray-500" th:text="${product.category != null ? product.category.name : 'Sans catégorie'}"></p>
                     <div class="flex items-center gap-2">
-                        <span class="text-indigo-600 font-bold" th:text="${#numbers.formatDecimal(product.price, 1, 2, 'POINT', 'NONE')} + ' د.ت'"></span>
-                        <span class="text-xs line-through text-gray-400" th:if="${product.originalPrice != null}" th:text="${#numbers.formatDecimal(product.originalPrice, 1, 2, 'POINT', 'NONE')} + ' د.ت'"></span>
+                        <span class="text-indigo-600 font-bold" th:text="${#numbers.formatDecimal(product.price, 1, 'NONE', 2, 'POINT')} + ' د.ت'"></span>
+                        <span class="text-xs line-through text-gray-400" th:if="${product.originalPrice != null}" th:text="${#numbers.formatDecimal(product.originalPrice, 1, 'NONE', 2, 'POINT')} + ' د.ت'"></span>
                     </div>
                 </article>
                 <p th:if="${#lists.isEmpty(products)}" class="col-span-full text-gray-500">Aucun produit pour le moment.</p>
