@@ -49,7 +49,7 @@
                                     <input type="number" name="quantity" min="1" class="w-16 border rounded-lg px-2 py-1" th:value="${item.quantity}" />
                                     <button type="submit" class="text-indigo-600 text-sm font-semibold">Mettre à jour</button>
                                 </form>
-                                <p class="font-semibold text-indigo-700" th:text="${item.totalPrice} + ' د.ت'">0 د.ت</p>
+                                <p class="font-semibold text-indigo-700" th:text="${item.totalPrice} + ' DT'">0 DT</p>
                             </div>
                         </div>
                     </div>
@@ -112,7 +112,7 @@
                             <span class="px-3 py-1 text-xs rounded-full bg-indigo-50 text-indigo-700" th:text="${product.category.name}">Catégorie</span>
                         </div>
                         <p class="text-sm text-gray-600" th:text="${product.description}">Description</p>
-                        <p class="text-lg font-semibold text-indigo-700" th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 2, 'POINT')} + ' د.ت'">0 د.ت</p>
+                        <p class="text-lg font-semibold text-indigo-700" th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 2, 'POINT')} + ' DT'">0 DT</p>
                         <form th:action="@{/home/add-to-cart}" method="post" class="pt-2">
                             <input type="hidden" name="productId" th:value="${product.id}" />
                             <input type="hidden" name="redirectTo" th:value="${currentCategoryUrl}" />

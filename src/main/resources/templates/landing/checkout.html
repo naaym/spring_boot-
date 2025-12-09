@@ -46,13 +46,13 @@
                         <p class="font-semibold" th:text="${item.product.name}">Produit</p>
                         <p class="text-sm text-gray-600" th:text="'Quantité : ' + ${item.quantity}"></p>
                     </div>
-                    <p class="font-semibold" th:text="${item.totalPrice} + ' د.ت'">0 د.ت</p>
+                    <p class="font-semibold" th:text="${item.totalPrice} + ' DT'">0 DT</p>
                 </div>
             </div>
             <div class="border-t mt-6 pt-4">
                 <div class="flex justify-between text-gray-700 mb-2">
                     <span>Total</span>
-                    <span class="text-xl font-bold text-indigo-700" th:text="${cartTotal} + ' د.ت'">0 د.ت</span>
+                    <span class="text-xl font-bold text-indigo-700" th:text="${cartTotal} + ' DT'">0 DT</span>
                 </div>
             </div>
         </div>

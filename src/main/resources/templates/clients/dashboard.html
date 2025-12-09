@@ -4,17 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Dashboard Client – Qowa</title>
+    <title>Dashboard Client </title>
 </head>
 
 <body class="bg-gray-100">
 
-<!-- LAYOUT -->
 <div class="flex min-h-screen">
 
-    <!-- SIDEBAR -->
     <aside class="w-72 bg-white shadow-xl p-6 hidden md:block">
+        <a href="/home">
+
         <h1 class="text-2xl font-extrabold text-indigo-700 mb-10">Delta-nutrition</h1>
+        </a>
 
         <nav class="space-y-4">
             <a href="#" class="flex items-center gap-3 text-lg p-3 rounded-lg bg-indigo-50 text-indigo-700 font-semibold">
@@ -23,31 +24,22 @@
             <a href="/clients/orders" class="flex items-center gap-3 text-lg p-3 rounded-lg hover:bg-gray-100">
                  Mes commandes
             </a>
-            <a href="#" class="flex items-center gap-3 text-lg p-3 rounded-lg hover:bg-gray-100">
-                 Wishlist
-            </a>
+
             <a href="#" class="flex items-center gap-3 text-lg p-3 rounded-lg hover:bg-gray-100">
                  Points fidélité
             </a>
             <a href="/clients/profile" class="flex items-center gap-3 text-lg p-3 rounded-lg hover:bg-gray-100">
                  Mon profil
             </a>
-            <a href="#" class="flex items-center gap-3 text-lg p-3 rounded-lg hover:bg-gray-100">
-                 Adresses
-            </a>
-            <a href="#" class="flex items-center gap-3 text-lg p-3 rounded-lg hover:bg-gray-100">
-                 Support
-            </a>
+
             <a href="/auth/logout" class="flex items-center gap-3 text-lg p-3 rounded-lg hover:bg-gray-100 text-red-600">
                  Déconnexion
             </a>
         </nav>
     </aside>
 
-    <!-- MAIN CONTENT -->
     <main class="flex-1 p-6">
 
-        <!-- HEADER -->
         <div class="flex justify-between items-center mb-8">
             <h2 class="text-3xl font-bold text-gray-800">Bienvenue, <span th:text="${name}">Client</span></h2>
 
@@ -61,7 +53,6 @@
             <p th:text="${orderSuccess}">Votre commande a été transmise. Merci !</p>
         </div>
 
-        <!-- STATS CARDS -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
             <div class="bg-white p-6 rounded-xl shadow">
                 <h3 class="text-gray-600">Commandes totales</h3>
@@ -70,16 +61,15 @@
 
             <div class="bg-white p-6 rounded-xl shadow">
                 <h3 class="text-gray-600">Points fidélité</h3>
-                <p class="text-3xl font-bold mt-2 text-indigo-600">340 pts</p>
+                <p class="text-3xl font-bold mt-2 text-indigo-600">0 pts</p>
             </div>
 
             <div class="bg-white p-6 rounded-xl shadow">
                 <h3 class="text-gray-600">Dépenses totales</h3>
-                <p class="text-3xl font-bold mt-2 text-green-600" th:text="${totalSpent != null ? totalSpent + ' د.ت' : '0 د.ت'}">890 د.ت</p>
+                <p class="text-3xl font-bold mt-2 text-green-600" th:text="${totalSpent != null ? totalSpent + ' DT' : '0 DT'}">890 DT</p>
             </div>
         </div>
 
-        <!-- LAST ORDERS -->
         <div class="bg-white p-6 rounded-xl shadow mb-10">
             <h3 class="text-2xl font-bold mb-4">Dernières commandes</h3>
 
@@ -103,7 +93,7 @@
 
                         <div class="flex justify-between items-center mb-3">
                         <h4 class="font-semibold">Articles</h4>
-                        <p class="text-lg font-bold text-indigo-700" th:text="${order.total + ' د.ت'}">0 د.ت</p>
+                        <p class="text-lg font-bold text-indigo-700" th:text="${order.total + ' DT'}">0 DT</p>
                     </div>
 
                     <div class="space-y-2">
@@ -112,48 +102,13 @@
                                 <p class="font-semibold" th:text="${item.product != null ? item.product.name : 'Produit'}">Produit</p>
                                 <p class="text-sm text-gray-600" th:text="${'Quantité : ' + item.quantity}"></p>
                             </div>
-                            <p class="font-semibold text-indigo-700" th:text="${item.lineTotal + ' د.ت'}">0 د.ت</p>
+                            <p class="font-semibold text-indigo-700" th:text="${item.lineTotal + ' DT'}">0 DT</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- RECOMMENDATIONS -->
-        <div>
-            <h3 class="text-2xl font-bold mb-4"> Recommandés pour vous</h3>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-                <div class="bg-white rounded-xl shadow p-4">
-                    <div class="h-48 bg-gray-200 rounded-lg"></div>
-                    <h4 class="text-lg font-bold mt-3">Whey Isolate 1KG</h4>
-                    <p class="font-semibold text-indigo-600 mt-1">99 د.ت</p>
-                    <button class="w-full bg-indigo-600 text-white py-2 mt-3 rounded-lg hover:bg-indigo-700">
-                        Ajouter au panier
-                    </button>
-                </div>
-
-                <div class="bg-white rounded-xl shadow p-4">
-                    <div class="h-48 bg-gray-200 rounded-lg"></div>
-                    <h4 class="text-lg font-bold mt-3">Créatine 500g</h4>
-                    <p class="font-semibold text-indigo-600 mt-1">49 د.ت</p>
-                    <button class="w-full bg-indigo-600 text-white py-2 mt-3 rounded-lg hover:bg-indigo-700">
-                        Ajouter au panier
-                    </button>
-                </div>
-
-                <div class="bg-white rounded-xl shadow p-4">
-                    <div class="h-48 bg-gray-200 rounded-lg"></div>
-                    <h4 class="text-lg font-bold mt-3">Shaker Pro 700ml</h4>
-                    <p class="font-semibold text-indigo-600 mt-1">18 د.ت</p>
-                    <button class="w-full bg-indigo-600 text-white py-2 mt-3 rounded-lg hover:bg-indigo-700">
-                        Ajouter au panier
-                    </button>
-                </div>
-
-            </div>
-        </div>
 
     </main>
 
