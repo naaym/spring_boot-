@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title th:text="${category.name} + ' – Delta Nutrition'">Delta Nutrition</title>
+</head>
+<body class="bg-gray-50 text-gray-800">
+<nav class="bg-white shadow fixed top-0 w-full z-50">
+    <div class="max-w-screen-2xl mx-auto px-6 py-4 flex justify-between items-center">
+        <h1 class="text-2xl font-bold"><a th:href="@{/home}" class="hover:text-indigo-600">Delta-nutrition</a></h1>
+
+        <ul class="hidden md:flex gap-8 text-lg">
+            <li><a th:href="@{/home}" class="hover:text-indigo-600">Accueil</a></li>
+            <li><a th:href="@{/home/checkout}" class="hover:text-indigo-600">Checkout</a></li>
+        </ul>
+
+        <div class="flex items-center gap-6">
+            <details class="relative" aria-label="Panier">
+                <summary class="list-none flex items-center cursor-pointer gap-2">
+                    <div class="relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7 text-gray-700">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                        </svg>
+                        <span class="absolute -top-2 -right-2 bg-blue-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center" th:text="${cartItemCount}">0</span>
+                    </div>
+                </summary>
+                <div class="absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-lg border p-4 space-y-3">
+                    <p class="text-lg font-semibold">Panier</p>
+                    <div th:if="${#lists.isEmpty(cart.items)}" class="text-sm text-gray-500">Votre panier est vide.</div>
+                    <div th:if="${!#lists.isEmpty(cart.items)}" class="space-y-3 max-h-64 overflow-y-auto">
+                        <div class="border rounded-lg p-3" th:each="item : ${cart.items}">
+                            <div class="flex justify-between">
+                                <div>
+                                    <p class="font-semibold" th:text="${item.product.name}">Produit</p>
+                                    <p class="text-xs text-gray-500" th:text="${item.product.description}">Description</p>
+                                </div>
+                                <form th:action="@{/home/remove-item}" method="post">
+                                    <input type="hidden" name="itemId" th:value="${item.id}" />
+                                    <input type="hidden" name="redirectTo" th:value="${currentCategoryUrl}" />
+                                    <button type="submit" class="text-red-500 text-sm hover:underline">Supprimer</button>
+                                </form>
+                            </div>
+                            <div class="flex items-center justify-between mt-3">
+                                <form th:action="@{/home/update-item}" method="post" class="flex items-center gap-2">
+                                    <input type="hidden" name="itemId" th:value="${item.id}" />
+                                    <input type="hidden" name="redirectTo" th:value="${currentCategoryUrl}" />
+                                    <input type="number" name="quantity" min="1" class="w-16 border rounded-lg px-2 py-1" th:value="${item.quantity}" />
+                                    <button type="submit" class="text-indigo-600 text-sm font-semibold">Mettre à jour</button>
+                                </form>
+                                <p class="font-semibold text-indigo-700" th:text="${item.totalPrice} + ' DT'">0 DT</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a th:href="@{/home/checkout}" class="block text-center bg-indigo-600 text-white py-2 rounded-xl hover:bg-indigo-700" th:classappend="${#lists.isEmpty(cart.items)} ? ' pointer-events-none opacity-50' : ''">Passer au checkout</a>
+                </div>
+            </details>
+            <button class="md:hidden text-xl">☰</button>
+        </div>
+    </div>
+</nav>
+
+<main class="max-w-screen-2xl mx-auto px-6 pt-28 pb-16">
+    <div class="mb-8">
+        <a th:href="@{/home}" class="text-sm text-indigo-600 hover:text-indigo-700">← Retour à l'accueil</a>
+        <h1 class="text-3xl font-bold mt-2" th:text="'Découvrir: ' + ${category.name}">Catégorie</h1>
+        <p class="text-gray-600">Affinez votre recherche avec les filtres ci-dessous.</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <aside class="lg:col-span-1 bg-white rounded-2xl shadow p-5 space-y-6">
+            <div>
+                <h3 class="text-lg font-semibold mb-2">Prix</h3>
+                <form th:action="@{/home/categories/{categoryId}(categoryId=${category.id})}" method="get" class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <label class="text-sm text-gray-600">Min</label>
+                        <input type="number" name="minPrice" step="0.01" class="w-full border rounded-lg px-3 py-2" th:value="${selectedMinPrice}" th:min="${availableMinPrice}" th:max="${availableMaxPrice}" />
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <label class="text-sm text-gray-600">Max</label>
+                        <input type="number" name="maxPrice" step="0.01" class="w-full border rounded-lg px-3 py-2" th:value="${selectedMaxPrice}" th:min="${availableMinPrice}" th:max="${availableMaxPrice}" />
+                    </div>
+                    <input type="range" min="0" th:min="${availableMinPrice}" th:max="${availableMaxPrice}" th:value="${selectedMaxPrice}" class="w-full" disabled />
+                    <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700">Filtrer</button>
+                </form>
+            </div>
+
+            <div>
+                <h3 class="text-lg font-semibold mb-2">Catégories</h3>
+                <ul class="space-y-2 text-sm">
+                    <li th:each="cat : ${categories}">
+                        <a th:href="@{/home/categories/{categoryId}(categoryId=${cat.id})}"
+                           class="block px-3 py-2 rounded-lg hover:bg-indigo-50"
+                           th:classappend="${cat.id} == ${category.id} ? 'bg-indigo-100 text-indigo-700 font-semibold' : ''"
+                           th:text="${cat.name}">Catégorie</a>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <section class="lg:col-span-3">
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
+                <div class="bg-white rounded-2xl shadow hover:shadow-lg transition overflow-hidden" th:each="product : ${products}">
+                    <div class="h-52 bg-gray-100 flex items-center justify-center">
+                        <img th:if="${product.imageUrl}" th:src="${product.imageUrl}" alt="product image" class="h-full w-full object-cover" />
+                        <div th:if="${product.imageUrl == null}" class="text-gray-500" th:text="${product.description}">Produit</div>
+                    </div>
+                    <div class="p-5 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-xl font-bold" th:text="${product.name}">Produit</h3>
+                            <span class="px-3 py-1 text-xs rounded-full bg-indigo-50 text-indigo-700" th:text="${product.category.name}">Catégorie</span>
+                        </div>
+                        <p class="text-sm text-gray-600" th:text="${product.description}">Description</p>
+                        <p class="text-lg font-semibold text-indigo-700" th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 2, 'POINT')} + ' DT'">0 DT</p>
+                        <form th:action="@{/home/add-to-cart}" method="post" class="pt-2">
+                            <input type="hidden" name="productId" th:value="${product.id}" />
+                            <input type="hidden" name="redirectTo" th:value="${currentCategoryUrl}" />
+                            <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-xl hover:bg-indigo-700">Ajouter au panier</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+</body>
+</html>
