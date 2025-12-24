@@ -87,7 +87,7 @@
                             <td class="py-2">
                                 <span class="px-3 py-1 rounded-full text-xs"
                                       th:text="${order.status}"
-                                      th:classappend="${order.status.name() == 'ANNULEE' ? 'bg-red-100 text-red-700' : (order.status.name() == 'EN_ROUTE' ? 'bg-blue-100 text-blue-700' : 'bg-amber-100 text-amber-700')}"></span>
+                                      th:classappend="${order.status.name() == 'ANNULEE' ? 'bg-red-100 text-red-700' : (order.status.name() == 'EN_ROUTE' ? 'bg-blue-100 text-blue-700' : (order.status.name() == 'LIVREE' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'))}"></span>
                             </td>
                             <td class="py-2 text-gray-500" th:text="${#temporals.format(order.createdAt, 'dd/MM/yyyy HH:mm')}"></td>
                         </tr>
@@ -98,38 +98,7 @@
                     </table>
                 </div>
             </div>
-            <div class="bg-white p-6 rounded-xl shadow space-y-4">
-                <h3 class="text-xl font-bold">Statistiques rapides</h3>
-                <div class="space-y-3">
-                    <div>
-                        <div class="flex justify-between text-sm text-gray-600">
-                            <span>Progression catalogue</span>
-                            <span th:text="${stats.categories} + ' catégories'"></span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
-                            <div class="h-2 rounded-full bg-indigo-500" th:style="'width:' + (${stats.categories} > 0 ? 100 : 20) + '%'"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-sm text-gray-600">
-                            <span>Produits actifs</span>
-                            <span th:text="${stats.products}"></span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
-                            <div class="h-2 rounded-full bg-green-500" th:style="'width:' + (${stats.products} > 0 ? 100 : 10) + '%'"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-sm text-gray-600">
-                            <span>Clients</span>
-                            <span th:text="${stats.clients}"></span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
-                            <div class="h-2 rounded-full bg-orange-400" th:style="'width:' + (${stats.clients} > 0 ? 100 : 15) + '%'"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </div>
 
     </main>

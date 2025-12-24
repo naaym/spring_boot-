@@ -3,6 +3,7 @@ package com.delta_nutritionMVC.delta.landing.models;
 public enum OrderStatus {
     PAS_ENCORE_LIVREE("Pas encore livrée"),
     EN_ROUTE("En route"),
+    LIVREE("Livrée"),
     ANNULEE("Annulée");
 
     private final String label;

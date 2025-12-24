@@ -42,7 +42,7 @@ public class Order {
     @Column(name = "client_email")
     private String clientEmail;
 
-    @Column(nullable = false, precision = 10, scale = 2)
+    @Column(nullable = false, scale = 2)
     private BigDecimal total;
 
     @Enumerated(EnumType.STRING)

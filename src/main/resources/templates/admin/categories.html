@@ -114,11 +114,25 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div th:each="category : ${categories}" class="p-4 rounded-lg border bg-gray-50">
-                    <div class="h-32 bg-gradient-to-br from-indigo-100 to-white rounded-md flex items-center justify-center overflow-hidden">
-                        <img th:if="${category.imageUrl}" th:src="${category.imageUrl}" alt="" class="w-full h-full object-cover" />
-                        <span th:if="${category.imageUrl == null}" class="text-indigo-600 text-xl font-semibold" th:text="${category.name.substring(0,1)}"></span>
-                    </div>
-                    <h4 class="mt-3 font-semibold" th:text="${category.name}"></h4>
+                    <form th:action="@{'/admins/categories/' + ${category.id}}" method="post" class="space-y-3" data-editable-form>
+                        <div class="h-32 bg-gradient-to-br from-indigo-100 to-white rounded-md flex items-center justify-center overflow-hidden">
+                            <img th:if="${category.imageUrl}" th:src="${category.imageUrl}" alt="" class="w-full h-full object-cover" />
+                            <span th:if="${category.imageUrl == null}" class="text-indigo-600 text-xl font-semibold" th:text="${category.name.substring(0,1)}"></span>
+                        </div>
+                        <div>
+                            <label class="text-sm text-gray-600">Nom</label>
+                            <input type="text" name="name" th:value="${category.name}" class="w-full mt-1 p-2 border rounded" disabled />
+                        </div>
+                        <div>
+                            <label class="text-sm text-gray-600">Image (URL)</label>
+                            <input type="text" name="imageUrl" th:value="${category.imageUrl}" class="w-full mt-1 p-2 border rounded" disabled />
+                        </div>
+                        <div class="flex gap-2">
+                            <button type="button" class="flex-1 bg-gray-200 text-gray-800 px-3 py-2 rounded hover:bg-gray-300" data-toggle-edit>Modifier</button>
+                            <button type="submit" class="flex-1 bg-indigo-600 text-white px-3 py-2 rounded hover:bg-indigo-700" data-submit disabled>Enregistrer</button>
+                            <button formmethod="post" th:formaction="@{'/admins/categories/' + ${category.id} + '/delete'}" class="bg-red-100 text-red-600 px-3 py-2 rounded hover:bg-red-200">Supprimer</button>
+                        </div>
+                    </form>
                 </div>
                 <p th:if="${#lists.isEmpty(categories)}" class="col-span-full text-gray-500">Aucune catégorie pour le moment.</p>
             </div>
@@ -129,22 +143,71 @@
                 <h3 class="text-2xl font-bold">Produits</h3>
                 <span class="text-sm text-gray-500" th:text="${#lists.size(products)} + ' produits'"></span>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <article th:each="product : ${products}" class="p-4 border rounded-lg bg-gray-50 flex flex-col gap-2">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <article th:each="product : ${products}" class="p-4 border rounded-lg bg-gray-50 flex flex-col gap-3">
                     <div class="h-32 bg-white rounded-md flex items-center justify-center overflow-hidden border">
                         <img th:if="${product.imageUrl}" th:src="${product.imageUrl}" alt="" class="w-full h-full object-cover" />
                         <div th:if="${product.imageUrl == null}" class="text-3xl">🛒</div>
                     </div>
-                    <h4 class="font-semibold" th:text="${product.name}"></h4>
-                    <p class="text-sm text-gray-500" th:text="${product.category != null ? product.category.name : 'Sans catégorie'}"></p>
-                    <div class="flex items-center gap-2">
-                        <span class="text-indigo-600 font-bold" th:text="${#numbers.formatDecimal(product.price, 1, 'NONE', 2, 'POINT')} + ' DT'"></span>
-                        <span class="text-xs line-through text-gray-400" th:if="${product.originalPrice != null}" th:text="${#numbers.formatDecimal(product.originalPrice, 1, 'NONE', 2, 'POINT')} + ' DT'"></span>
-                    </div>
+                    <form th:action="@{'/admins/products/' + ${product.id}}" method="post" class="space-y-2" data-editable-form>
+                        <div>
+                            <label class="text-sm text-gray-600">Nom</label>
+                            <input type="text" name="name" th:value="${product.name}" class="w-full mt-1 p-2 border rounded" disabled />
+                        </div>
+                        <div>
+                            <label class="text-sm text-gray-600">Prix</label>
+                            <input type="number" step="0.01" name="price" th:value="${product.price}" class="w-full mt-1 p-2 border rounded" disabled />
+                        </div>
+                        <div>
+                            <label class="text-sm text-gray-600">Ancien prix</label>
+                            <input type="number" step="0.01" name="originalPrice" th:value="${product.originalPrice}" class="w-full mt-1 p-2 border rounded" disabled />
+                        </div>
+                        <div>
+                            <label class="text-sm text-gray-600">Catégorie</label>
+                            <select name="categoryId" class="w-full mt-1 p-2 border rounded" disabled>
+                                <option value="">Sans catégorie</option>
+                                <option th:each="category : ${categories}" th:value="${category.id}" th:selected="${product.category != null and product.category.id == category.id}" th:text="${category.name}"></option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-sm text-gray-600">Image (URL)</label>
+                            <input type="text" name="imageUrl" th:value="${product.imageUrl}" class="w-full mt-1 p-2 border rounded" disabled />
+                        </div>
+                        <div>
+                            <label class="text-sm text-gray-600">Description</label>
+                            <textarea name="description" class="w-full mt-1 p-2 border rounded" rows="2" th:text="${product.description}" disabled></textarea>
+                        </div>
+                        <div class="flex gap-2">
+                            <button type="button" class="flex-1 bg-gray-200 text-gray-800 px-3 py-2 rounded hover:bg-gray-300" data-toggle-edit>Modifier</button>
+                            <button type="submit" class="flex-1 bg-indigo-600 text-white px-3 py-2 rounded hover:bg-indigo-700" data-submit disabled>Enregistrer</button>
+                            <button formmethod="post" th:formaction="@{'/admins/products/' + ${product.id} + '/delete'}" class="bg-red-100 text-red-600 px-3 py-2 rounded hover:bg-red-200">Supprimer</button>
+                        </div>
+                    </form>
                 </article>
-                <p th:if="${#lists.isEmpty(products)}" class="col-span-full text-gray-500">Aucun produit pour le moment.</p>
-            </div>
-        </section>
+            <p th:if="${#lists.isEmpty(products)}" class="col-span-full text-gray-500">Aucun produit pour le moment.</p>
+        </div>
+    </section>
+    <script>
+        document.querySelectorAll('[data-editable-form]').forEach((form) => {
+            const toggleButton = form.querySelector('[data-toggle-edit]');
+            const submitButton = form.querySelector('[data-submit]');
+            const inputs = form.querySelectorAll('input, textarea, select');
+
+            const setEditable = (enabled) => {
+                inputs.forEach((input) => input.disabled = !enabled);
+                submitButton.disabled = !enabled;
+                submitButton.classList.toggle('opacity-50', !enabled);
+                submitButton.classList.toggle('cursor-not-allowed', !enabled);
+            };
+
+            setEditable(false);
+
+            toggleButton?.addEventListener('click', () => {
+                setEditable(true);
+                inputs[0]?.focus();
+            });
+        });
+    </script>
     </main>
 </div>
 </body>
