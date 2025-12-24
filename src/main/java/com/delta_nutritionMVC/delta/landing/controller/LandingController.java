@@ -1,10 +1,10 @@
 package com.delta_nutritionMVC.delta.landing.controller;
 
-import com.delta_nutritionMVC.delta.landing.dtos.CheckoutForm;
-import com.delta_nutritionMVC.delta.landing.models.Cart;
-import com.delta_nutritionMVC.delta.landing.services.CartServiceImpl;
-import com.delta_nutritionMVC.delta.landing.services.CheckoutServiceImpl;
-import com.delta_nutritionMVC.delta.landing.services.CatalogBrowsingServiceImpl;
+import com.delta_nutritionMVC.delta.checkout.dtos.CheckoutForm;
+import com.delta_nutritionMVC.delta.cart.models.Cart;
+import com.delta_nutritionMVC.delta.cart.services.CarteService;
+import com.delta_nutritionMVC.delta.checkout.services.CheckoutService;
+import com.delta_nutritionMVC.delta.catalog.services.CatalogBrowsingService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -22,9 +22,9 @@ import jakarta.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 public class LandingController {
 
-    private final CartServiceImpl cartServiceImpl;
-    private final CheckoutServiceImpl checkoutServiceImpl;
-    private final CatalogBrowsingServiceImpl catalogBrowsingServiceImpl;
+    private final CarteService cartServiceImpl;
+    private final CheckoutService checkoutServiceImpl;
+    private final CatalogBrowsingService catalogBrowsingServiceImpl;
 
     @GetMapping
     public String landing(Model model, HttpSession session) {

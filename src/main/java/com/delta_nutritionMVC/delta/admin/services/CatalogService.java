@@ -4,8 +4,8 @@ import com.delta_nutritionMVC.delta.admin.models.Category;
 import com.delta_nutritionMVC.delta.admin.repositories.CategoryRepository;
 import com.delta_nutritionMVC.delta.admin.web.CategoryForm;
 import com.delta_nutritionMVC.delta.admin.web.ProductForm;
-import com.delta_nutritionMVC.delta.landing.models.Product;
-import com.delta_nutritionMVC.delta.landing.repositories.ProductRepository;
+import com.delta_nutritionMVC.delta.product.models.Product;
+import com.delta_nutritionMVC.delta.product.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,4 +1,6 @@
-package com.delta_nutritionMVC.delta.landing.models;
+package com.delta_nutritionMVC.delta.cart.models;
+
+import com.delta_nutritionMVC.delta.product.models.Product;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

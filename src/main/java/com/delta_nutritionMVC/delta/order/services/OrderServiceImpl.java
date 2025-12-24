@@ -1,12 +1,12 @@
-package com.delta_nutritionMVC.delta.landing.services;
+package com.delta_nutritionMVC.delta.order.services;
 
-import com.delta_nutritionMVC.delta.landing.dtos.CheckoutForm;
-import com.delta_nutritionMVC.delta.landing.models.Cart;
-import com.delta_nutritionMVC.delta.landing.models.CartItem;
-import com.delta_nutritionMVC.delta.landing.models.Order;
-import com.delta_nutritionMVC.delta.landing.models.OrderItem;
-import com.delta_nutritionMVC.delta.landing.models.OrderStatus;
-import com.delta_nutritionMVC.delta.landing.repositories.OrderRepository;
+import com.delta_nutritionMVC.delta.checkout.dtos.CheckoutForm;
+import com.delta_nutritionMVC.delta.cart.models.Cart;
+import com.delta_nutritionMVC.delta.cart.models.CartItem;
+import com.delta_nutritionMVC.delta.order.models.Order;
+import com.delta_nutritionMVC.delta.order.models.OrderItem;
+import com.delta_nutritionMVC.delta.order.models.OrderStatus;
+import com.delta_nutritionMVC.delta.order.repositories.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

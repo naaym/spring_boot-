@@ -1,4 +1,4 @@
-package com.delta_nutritionMVC.delta.landing.dtos;
+package com.delta_nutritionMVC.delta.checkout.dtos;
 
 
 import lombok.Getter;

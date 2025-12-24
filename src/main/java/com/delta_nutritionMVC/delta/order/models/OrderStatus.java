@@ -1,4 +1,4 @@
-package com.delta_nutritionMVC.delta.landing.models;
+package com.delta_nutritionMVC.delta.order.models;
 
 public enum OrderStatus {
     PAS_ENCORE_LIVREE("Pas encore livrée"),

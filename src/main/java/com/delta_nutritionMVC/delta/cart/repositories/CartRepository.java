@@ -1,6 +1,6 @@
-package com.delta_nutritionMVC.delta.landing.repositories;
+package com.delta_nutritionMVC.delta.cart.repositories;
 
-import com.delta_nutritionMVC.delta.landing.models.Cart;
+import com.delta_nutritionMVC.delta.cart.models.Cart;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CartRepository extends JpaRepository<Cart, Long> {

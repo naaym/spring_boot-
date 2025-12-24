@@ -1,7 +1,7 @@
-package com.delta_nutritionMVC.delta.landing.repositories;
+package com.delta_nutritionMVC.delta.order.repositories;
 
-import com.delta_nutritionMVC.delta.landing.models.Order;
-import com.delta_nutritionMVC.delta.landing.models.OrderStatus;
+import com.delta_nutritionMVC.delta.order.models.Order;
+import com.delta_nutritionMVC.delta.order.models.OrderStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.domain.Sort;
 

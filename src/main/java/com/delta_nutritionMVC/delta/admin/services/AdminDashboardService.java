@@ -1,8 +1,8 @@
 package com.delta_nutritionMVC.delta.admin.services;
 
-import com.delta_nutritionMVC.delta.landing.models.Order;
-import com.delta_nutritionMVC.delta.landing.repositories.OrderRepository;
-import com.delta_nutritionMVC.delta.landing.repositories.ProductRepository;
+import com.delta_nutritionMVC.delta.order.models.Order;
+import com.delta_nutritionMVC.delta.order.repositories.OrderRepository;
+import com.delta_nutritionMVC.delta.product.repositories.ProductRepository;
 import com.delta_nutritionMVC.delta.client.repositories.ClientRepository;
 import com.delta_nutritionMVC.delta.admin.repositories.CategoryRepository;
 import org.springframework.stereotype.Service;

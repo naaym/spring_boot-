@@ -1,8 +1,10 @@
-package com.delta_nutritionMVC.delta.landing.services;
+package com.delta_nutritionMVC.delta.checkout.services;
 
-import com.delta_nutritionMVC.delta.landing.dtos.CheckoutForm;
-import com.delta_nutritionMVC.delta.landing.models.Cart;
-import com.delta_nutritionMVC.delta.landing.models.Order;
+import com.delta_nutritionMVC.delta.checkout.dtos.CheckoutForm;
+import com.delta_nutritionMVC.delta.cart.models.Cart;
+import com.delta_nutritionMVC.delta.order.models.Order;
+import com.delta_nutritionMVC.delta.cart.services.CarteService;
+import com.delta_nutritionMVC.delta.order.services.OrderService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,8 +15,8 @@ import org.springframework.util.StringUtils;
 public class CheckoutServiceImpl  implements CheckoutService {
     private static final String LAST_ORDER_ID_ATTRIBUTE = "lastOrderId";
 
-    private final CartServiceImpl cartServiceImpl;
-    private final OrderServiceImpl orderServiceImpl;
+    private final CarteService cartServiceImpl;
+    private final OrderService orderServiceImpl;
 @Override
     public Order finalizeOrder(CheckoutForm form, HttpSession session) {
         Cart cart = cartServiceImpl.getOrCreateCart(session);

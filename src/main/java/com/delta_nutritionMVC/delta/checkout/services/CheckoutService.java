@@ -1,7 +1,7 @@
-package com.delta_nutritionMVC.delta.landing.services;
+package com.delta_nutritionMVC.delta.checkout.services;
 
-import com.delta_nutritionMVC.delta.landing.dtos.CheckoutForm;
-import com.delta_nutritionMVC.delta.landing.models.Order;
+import com.delta_nutritionMVC.delta.checkout.dtos.CheckoutForm;
+import com.delta_nutritionMVC.delta.order.models.Order;
 import jakarta.servlet.http.HttpSession;
 
 public interface CheckoutService {

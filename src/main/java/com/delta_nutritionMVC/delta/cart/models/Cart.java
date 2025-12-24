@@ -1,4 +1,4 @@
-package com.delta_nutritionMVC.delta.landing.models;
+package com.delta_nutritionMVC.delta.cart.models;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -10,6 +10,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+
+import com.delta_nutritionMVC.delta.product.models.Product;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

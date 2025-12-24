@@ -1,10 +1,10 @@
-package com.delta_nutritionMVC.delta.landing.services;
+package com.delta_nutritionMVC.delta.cart.services;
 
-import com.delta_nutritionMVC.delta.landing.models.Cart;
-import com.delta_nutritionMVC.delta.landing.models.CartItem;
-import com.delta_nutritionMVC.delta.landing.models.Product;
-import com.delta_nutritionMVC.delta.landing.repositories.CartRepository;
-import com.delta_nutritionMVC.delta.landing.repositories.ProductRepository;
+import com.delta_nutritionMVC.delta.cart.models.Cart;
+import com.delta_nutritionMVC.delta.cart.models.CartItem;
+import com.delta_nutritionMVC.delta.product.models.Product;
+import com.delta_nutritionMVC.delta.cart.repositories.CartRepository;
+import com.delta_nutritionMVC.delta.product.repositories.ProductRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +22,7 @@ public class CartServiceImpl implements  CarteService{
     private final ProductRepository productRepository;
     private final CartRepository cartRepository;
 
+    @Override
     public List<Product> listProducts() {
         return productRepository.findAll();
     }
@@ -57,6 +58,7 @@ public class CartServiceImpl implements  CarteService{
         cartRepository.save(cart);
     }
 
+    @Override
     public BigDecimal calculateTotal(Cart cart) {
         return cart.getTotal();
     }

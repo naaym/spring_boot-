@@ -4,9 +4,9 @@ import com.delta_nutritionMVC.delta.auth.dtos.SignInResponse;
 import com.delta_nutritionMVC.delta.client.dtos.ClientSignUpRequest;
 import com.delta_nutritionMVC.delta.client.dtos.ClientUpdateProfilRequest;
 import com.delta_nutritionMVC.delta.client.services.ClientService;
-import com.delta_nutritionMVC.delta.landing.models.Order;
-import com.delta_nutritionMVC.delta.landing.services.CheckoutServiceImpl;
-import com.delta_nutritionMVC.delta.landing.services.OrderServiceImpl;
+import com.delta_nutritionMVC.delta.order.models.Order;
+import com.delta_nutritionMVC.delta.checkout.services.CheckoutService;
+import com.delta_nutritionMVC.delta.order.services.OrderService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +24,8 @@ import java.util.List;
 public class ClientController {
 
     private final ClientService clientService;
-    private final CheckoutServiceImpl checkoutServiceImpl;
-    private final OrderServiceImpl orderServiceImpl;
+    private final CheckoutService checkoutServiceImpl;
+    private final OrderService orderServiceImpl;
 
     @GetMapping("/clients/signup")
     public String showSignupForm(Model model) {

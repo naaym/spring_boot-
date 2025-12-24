@@ -1,6 +1,6 @@
-package com.delta_nutritionMVC.delta.landing.repositories;
+package com.delta_nutritionMVC.delta.product.repositories;
 
-import com.delta_nutritionMVC.delta.landing.models.Product;
+import com.delta_nutritionMVC.delta.product.models.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

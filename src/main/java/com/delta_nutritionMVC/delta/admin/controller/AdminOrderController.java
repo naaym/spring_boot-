@@ -1,7 +1,7 @@
 package com.delta_nutritionMVC.delta.admin.controller;
 
-import com.delta_nutritionMVC.delta.landing.models.OrderStatus;
-import com.delta_nutritionMVC.delta.landing.services.OrderServiceImpl;
+import com.delta_nutritionMVC.delta.order.models.OrderStatus;
+import com.delta_nutritionMVC.delta.order.services.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/admins/orders")
 public class AdminOrderController {
 
-    private final OrderServiceImpl orderServiceImpl;
+    private final OrderService orderServiceImpl;
 
     @GetMapping
     public String list(Model model) {

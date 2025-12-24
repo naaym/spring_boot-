@@ -1,9 +1,9 @@
-package com.delta_nutritionMVC.delta.landing.services;
+package com.delta_nutritionMVC.delta.catalog.services;
 
 import com.delta_nutritionMVC.delta.admin.models.Category;
 import com.delta_nutritionMVC.delta.admin.repositories.CategoryRepository;
-import com.delta_nutritionMVC.delta.landing.models.Product;
-import com.delta_nutritionMVC.delta.landing.repositories.ProductRepository;
+import com.delta_nutritionMVC.delta.product.models.Product;
+import com.delta_nutritionMVC.delta.product.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +18,12 @@ public class CatalogBrowsingServiceImpl implements  CatalogBrowsingService {
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
 
+    @Override
     public List<Category> listCategories() {
         return categoryRepository.findAll();
     }
 
+    @Override
     public Category getCategory(Long categoryId) {
         return categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new IllegalArgumentException("Catégorie introuvable"));
