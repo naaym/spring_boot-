@@ -27,13 +27,7 @@ public class LandingController {
 
     @GetMapping
     public String landing(Model model, HttpSession session) {
-        Cart cart = cartService.getOrCreateCart(session);
-        model.addAttribute("products", cartService.listProducts());
-        model.addAttribute("categories", catalogBrowsingService.listCategories());
-        model.addAttribute("cart", cart);
-        model.addAttribute("cartTotal", cartService.calculateTotal(cart));
-        model.addAttribute("cartItemCount", cartService.calculateItemsCount(cart));
-        return "landing/landing";
+        return "redirect:/auth/login";
     }
 
     @PostMapping("/add-to-cart")
