@@ -21,4 +21,5 @@ public class AdminController {
         model.addAttribute("recentOrders", dashboardService.fetchRecentOrders(5));
         return "admin/dashboard";
     }
+
 }
