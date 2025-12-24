@@ -19,8 +19,6 @@ public class ClientEntity extends UserEntity {
     private String phone;
     private String cityName;
     private String addressLiv;
-
     private Boolean active=true;
-    private Integer age;
 
 }

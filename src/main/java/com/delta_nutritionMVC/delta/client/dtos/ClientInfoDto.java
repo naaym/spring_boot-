@@ -17,5 +17,4 @@ public class ClientInfoDto{
     String addressLiv;
     boolean active;
     String fullName;
-    Integer age;
 }

@@ -1,6 +1,5 @@
 package com.delta_nutritionMVC.delta.landing.services;
 
-import com.delta_nutritionMVC.delta.admin.services.NotificationService;
 import com.delta_nutritionMVC.delta.landing.dtos.CheckoutForm;
 import com.delta_nutritionMVC.delta.landing.models.Cart;
 import com.delta_nutritionMVC.delta.landing.models.CartItem;
@@ -21,7 +20,6 @@ import java.util.Optional;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
-    private final NotificationService notificationService;
 
     @Transactional
     @Override
@@ -38,7 +36,6 @@ public class OrderServiceImpl implements OrderService {
 
         order.setTotal(calculateTotal(order.getItems()));
         Order savedOrder = orderRepository.save(order);
-        notificationService.notifyNewOrder(savedOrder);
         return savedOrder;
     }
     @Override
@@ -82,7 +79,6 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findById(orderId)
                 .map(order -> {
                     order.setStatus(status);
-                    notificationService.markOrderNotificationsAsRead(orderId);
                     return orderRepository.save(order);
                 });
     }

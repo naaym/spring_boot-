@@ -16,5 +16,4 @@ public class SignUpResponsedto {
     String phone;
     String addressLiv;
     String cityName;
-    int age;
 }

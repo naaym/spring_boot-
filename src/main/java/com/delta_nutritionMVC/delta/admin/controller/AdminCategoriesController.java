@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/admins")
-public class AdminCatalogController {
+public class AdminCategoriesController {
 
     private final CatalogService catalogService;
 
-    public AdminCatalogController(CatalogService catalogService) {
+    public AdminCategoriesController(CatalogService catalogService) {
         this.catalogService = catalogService;
     }
 

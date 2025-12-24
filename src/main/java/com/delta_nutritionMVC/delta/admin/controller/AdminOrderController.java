@@ -1,6 +1,5 @@
 package com.delta_nutritionMVC.delta.admin.controller;
 
-import com.delta_nutritionMVC.delta.admin.services.NotificationService;
 import com.delta_nutritionMVC.delta.landing.models.OrderStatus;
 import com.delta_nutritionMVC.delta.landing.services.OrderServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AdminOrderController {
 
     private final OrderServiceImpl orderServiceImpl;
-    private final NotificationService notificationService;
 
     @GetMapping
     public String list(Model model) {
         model.addAttribute("orders", orderServiceImpl.findAllOrders());
         model.addAttribute("statuses", OrderStatus.values());
-        model.addAttribute("notifications", notificationService.fetchUnreadNotifications());
-        model.addAttribute("unreadCount", notificationService.countUnread());
         return "admin/orders";
     }
 
@@ -37,7 +33,6 @@ public class AdminOrderController {
 
     @PostMapping("/notifications/{notificationId}/read")
     public String markAsRead(@PathVariable Long notificationId) {
-        notificationService.markAsRead(notificationId);
         return "redirect:/admins/orders";
     }
 }

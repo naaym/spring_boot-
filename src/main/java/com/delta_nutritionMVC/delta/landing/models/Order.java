@@ -42,11 +42,11 @@ public class Order {
     @Column(name = "client_email")
     private String clientEmail;
 
-    @Column(nullable = false, precision = 10, scale = 2)
+    @Column(nullable = false, scale = 2)
     private BigDecimal total;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "ENUM('PAS_ENCORE_LIVREE','EN_ROUTE','LIVREE','ANNULEE')")
+    @Column(nullable = false)
     private OrderStatus status = OrderStatus.PAS_ENCORE_LIVREE;
 
     @Column(nullable = false, updatable = false)

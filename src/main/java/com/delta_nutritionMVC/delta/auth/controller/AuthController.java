@@ -3,6 +3,7 @@ package com.delta_nutritionMVC.delta.auth.controller;
 import com.delta_nutritionMVC.delta.auth.dtos.SignInRequest;
 import com.delta_nutritionMVC.delta.auth.dtos.SignInResponse;
 import com.delta_nutritionMVC.delta.auth.services.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import lombok.RequiredArgsConstructor;
@@ -51,8 +52,11 @@ public class AuthController {
     }
 
     @GetMapping("/auth/logout")
-    public String logout(HttpSession session) {
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
         session.invalidate();
+        }
         return "redirect:/auth/login";
     }
 }

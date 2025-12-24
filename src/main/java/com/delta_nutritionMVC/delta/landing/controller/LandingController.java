@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/home")
@@ -131,14 +132,12 @@ public class LandingController {
                                  @RequestParam(value = "maxPrice", required = false) String maxPrice,
                                  Model model,
                                  HttpSession session,
-                                 RedirectAttributes redirectAttributes,
-                                 jakarta.servlet.http.HttpServletRequest request) {
+                                 HttpServletRequest request) {
         Cart cart = cartServiceImpl.getOrCreateCart(session);
 
         var category = catalogBrowsingServiceImpl.getCategory(categoryId);
         var priceRange = catalogBrowsingServiceImpl.getPriceRangeForCategory(categoryId);
         if (!priceRange.hasProducts()) {
-            redirectAttributes.addFlashAttribute("error", "Cette catégorie ne contient aucun produit pour le moment.");
             return "redirect:/home";
         }
 

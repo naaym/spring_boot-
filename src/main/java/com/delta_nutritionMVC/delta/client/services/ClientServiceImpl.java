@@ -32,8 +32,7 @@ public class ClientServiceImpl implements ClientService {
                         client.getCityName(),
                         client.getAddressLiv(),
                         client.getActive(),
-                        client.getFullName(),
-                        client.getAge()
+                        client.getFullName()
                 ))
                 .toList();
     }
@@ -54,7 +53,6 @@ public class ClientServiceImpl implements ClientService {
         entity.setPhone(clientRequest.getPhone());
         entity.setAddressLiv(clientRequest.getAddressLiv());
         entity.setCityName(clientRequest.getCityName());
-        entity.setAge(clientRequest.getAge());
         entity.setRole(Role.CLIENT);
         entity.setActive(true);
 
@@ -64,8 +62,7 @@ public class ClientServiceImpl implements ClientService {
                 entity.getEmail(),
                 entity.getPhone(),
                 entity.getAddressLiv(),
-                entity.getCityName(),
-                entity.getAge());
+                entity.getCityName());
     }
 
     @Override
@@ -78,8 +75,7 @@ public class ClientServiceImpl implements ClientService {
                         client.getCityName(),
                         client.getAddressLiv(),
                         client.getActive(),
-                        client.getFullName(),
-                        client.getAge()
+                        client.getFullName()
                 ))
                 .orElse(null);
     }
@@ -94,8 +90,7 @@ public class ClientServiceImpl implements ClientService {
                         client.getCityName(),
                         client.getAddressLiv(),
                         client.getActive(),
-                        client.getFullName(),
-                        client.getAge()
+                        client.getFullName()
                 ))
                 .orElse(null);
     }
@@ -119,8 +114,7 @@ public class ClientServiceImpl implements ClientService {
                 updated.getCityName(),
                 updated.getAddressLiv(),
                 updated.getActive(),
-                updated.getFullName(),
-                updated.getAge()
+                updated.getFullName()
         );
     }
 }
