@@ -2,7 +2,7 @@ package com.delta_nutritionMVC.delta.admin.controller;
 
 import com.delta_nutritionMVC.delta.admin.services.NotificationService;
 import com.delta_nutritionMVC.delta.landing.models.OrderStatus;
-import com.delta_nutritionMVC.delta.landing.services.OrderService;
+import com.delta_nutritionMVC.delta.landing.services.OrderServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/admins/orders")
 public class AdminOrderController {
 
-    private final OrderService orderService;
+    private final OrderServiceImpl orderServiceImpl;
     private final NotificationService notificationService;
 
     @GetMapping
     public String list(Model model) {
-        model.addAttribute("orders", orderService.findAllOrders());
+        model.addAttribute("orders", orderServiceImpl.findAllOrders());
         model.addAttribute("statuses", OrderStatus.values());
         model.addAttribute("notifications", notificationService.fetchUnreadNotifications());
         model.addAttribute("unreadCount", notificationService.countUnread());
@@ -31,7 +31,7 @@ public class AdminOrderController {
 
     @PostMapping("/{orderId}/status")
     public String updateStatus(@PathVariable Long orderId, @RequestParam("status") OrderStatus status) {
-        orderService.updateStatus(orderId, status);
+        orderServiceImpl.updateStatus(orderId, status);
         return "redirect:/admins/orders";
     }
 

@@ -12,6 +12,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -20,6 +22,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "orders")
+@Getter
+@Setter
 public class Order {
 
     @Id
@@ -51,8 +55,34 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<OrderItem> items = new ArrayList<>();
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     protected Order() {
-        // JPA
+
     }
 
     public Order(String fullName, String phone, String address, String clientEmail) {
@@ -76,49 +106,6 @@ public class Order {
         items.add(item);
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public BigDecimal getTotal() {
-        return total;
-    }
-
-    public void setTotal(BigDecimal total) {
-        this.total = total;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public List<OrderItem> getItems() {
-        return items;
-    }
-
-    public String getClientEmail() {
-        return clientEmail;
-    }
-
-    public OrderStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(OrderStatus status) {
-        this.status = status;
-    }
 
     public boolean isCancelled() {
         return OrderStatus.ANNULEE.equals(this.status);

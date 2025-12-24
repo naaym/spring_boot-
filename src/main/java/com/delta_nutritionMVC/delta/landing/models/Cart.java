@@ -8,6 +8,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -16,6 +18,8 @@ import java.util.Optional;
 
 @Entity
 @Table(name = "carts")
+@Getter
+@Setter
 public class Cart {
 
     @Id
@@ -25,13 +29,48 @@ public class Cart {
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<CartItem> items = new ArrayList<>();
 
-    public Long getId() {
-        return id;
-    }
 
-    public List<CartItem> getItems() {
-        return items;
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public void addOrIncrementItem(Product product) {
         Optional<CartItem> existingItem = items.stream()

@@ -1,10 +1,10 @@
-package com.delta_nutritionMVC.delta.landing;
+package com.delta_nutritionMVC.delta.landing.controller;
 
 import com.delta_nutritionMVC.delta.landing.dtos.CheckoutForm;
 import com.delta_nutritionMVC.delta.landing.models.Cart;
-import com.delta_nutritionMVC.delta.landing.services.CartService;
-import com.delta_nutritionMVC.delta.landing.services.CheckoutService;
-import com.delta_nutritionMVC.delta.landing.services.CatalogBrowsingService;
+import com.delta_nutritionMVC.delta.landing.services.CartServiceImpl;
+import com.delta_nutritionMVC.delta.landing.services.CheckoutServiceImpl;
+import com.delta_nutritionMVC.delta.landing.services.CatalogBrowsingServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -21,18 +21,18 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequiredArgsConstructor
 public class LandingController {
 
-    private final CartService cartService;
-    private final CheckoutService checkoutService;
-    private final CatalogBrowsingService catalogBrowsingService;
+    private final CartServiceImpl cartServiceImpl;
+    private final CheckoutServiceImpl checkoutServiceImpl;
+    private final CatalogBrowsingServiceImpl catalogBrowsingServiceImpl;
 
     @GetMapping
     public String landing(Model model, HttpSession session) {
-        Cart cart = cartService.getOrCreateCart(session);
-        model.addAttribute("products", cartService.listProducts());
-        model.addAttribute("categories", catalogBrowsingService.listCategories());
+        Cart cart = cartServiceImpl.getOrCreateCart(session);
+        model.addAttribute("products", cartServiceImpl.listProducts());
+        model.addAttribute("categories", catalogBrowsingServiceImpl.listCategories());
         model.addAttribute("cart", cart);
-        model.addAttribute("cartTotal", cartService.calculateTotal(cart));
-        model.addAttribute("cartItemCount", cartService.calculateItemsCount(cart));
+        model.addAttribute("cartTotal", cartServiceImpl.calculateTotal(cart));
+        model.addAttribute("cartItemCount", cartServiceImpl.calculateItemsCount(cart));
         return "landing/landing";
     }
 
@@ -42,7 +42,7 @@ public class LandingController {
                             HttpSession session,
                             RedirectAttributes redirectAttributes) {
         try {
-            cartService.addProductToCart(productId, session);
+            cartServiceImpl.addProductToCart(productId, session);
             redirectAttributes.addFlashAttribute("message", "Produit ajouté au panier.");
         } catch (IllegalArgumentException ex) {
             redirectAttributes.addFlashAttribute("error", ex.getMessage());
@@ -60,7 +60,7 @@ public class LandingController {
                                      HttpSession session,
                                      RedirectAttributes redirectAttributes) {
         try {
-            cartService.updateItemQuantity(itemId, quantity, session);
+            cartServiceImpl.updateItemQuantity(itemId, quantity, session);
             redirectAttributes.addFlashAttribute("message", "Quantité mise à jour.");
         } catch (IllegalArgumentException ex) {
             redirectAttributes.addFlashAttribute("error", ex.getMessage());
@@ -77,7 +77,7 @@ public class LandingController {
                              HttpSession session,
                              RedirectAttributes redirectAttributes) {
         try {
-            cartService.removeItem(itemId, session);
+            cartServiceImpl.removeItem(itemId, session);
             redirectAttributes.addFlashAttribute("message", "Article supprimé du panier.");
         } catch (IllegalArgumentException ex) {
             redirectAttributes.addFlashAttribute("error", ex.getMessage());
@@ -90,7 +90,7 @@ public class LandingController {
 
     @GetMapping("/checkout")
     public String checkout(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
-        Cart cart = cartService.getOrCreateCart(session);
+        Cart cart = cartServiceImpl.getOrCreateCart(session);
         if (cart.getItems().isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Ajoutez au moins un produit avant de passer au paiement.");
             return "redirect:/home";
@@ -101,26 +101,26 @@ public class LandingController {
         }
 
         model.addAttribute("cart", cart);
-        model.addAttribute("cartTotal", cartService.calculateTotal(cart));
+        model.addAttribute("cartTotal", cartServiceImpl.calculateTotal(cart));
         return "landing/checkout";
     }
 
     @PostMapping("/checkout")
     public String submitCheckout(CheckoutForm form, HttpSession session, Model model, RedirectAttributes redirectAttributes) {
-        Cart cart = cartService.getOrCreateCart(session);
+        Cart cart = cartServiceImpl.getOrCreateCart(session);
         if (cart.getItems().isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Votre panier est vide.");
             return "redirect:/home";
         }
 
-        if (!checkoutService.hasValidContactDetails(form)) {
+        if (!checkoutServiceImpl.hasValidContactDetails(form)) {
             model.addAttribute("cart", cart);
-            model.addAttribute("cartTotal", cartService.calculateTotal(cart));
+            model.addAttribute("cartTotal", cartServiceImpl.calculateTotal(cart));
             model.addAttribute("error", "Merci de renseigner vos coordonnées pour finaliser la commande.");
             return "landing/checkout";
         }
 
-        checkoutService.finalizeOrder(form, session);
+        checkoutServiceImpl.finalizeOrder(form, session);
         redirectAttributes.addFlashAttribute("orderSuccess", "Votre commande a été transmise. Merci !");
         return "redirect:/clients/dashboard";
     }
@@ -133,29 +133,29 @@ public class LandingController {
                                  HttpSession session,
                                  RedirectAttributes redirectAttributes,
                                  jakarta.servlet.http.HttpServletRequest request) {
-        Cart cart = cartService.getOrCreateCart(session);
+        Cart cart = cartServiceImpl.getOrCreateCart(session);
 
-        var category = catalogBrowsingService.getCategory(categoryId);
-        var priceRange = catalogBrowsingService.getPriceRangeForCategory(categoryId);
+        var category = catalogBrowsingServiceImpl.getCategory(categoryId);
+        var priceRange = catalogBrowsingServiceImpl.getPriceRangeForCategory(categoryId);
         if (!priceRange.hasProducts()) {
             redirectAttributes.addFlashAttribute("error", "Cette catégorie ne contient aucun produit pour le moment.");
             return "redirect:/home";
         }
 
-        var resolvedMin = catalogBrowsingService.resolvePrice(minPrice, priceRange.min());
-        var resolvedMax = catalogBrowsingService.resolvePrice(maxPrice, priceRange.max());
+        var resolvedMin = catalogBrowsingServiceImpl.resolvePrice(minPrice, priceRange.min());
+        var resolvedMax = catalogBrowsingServiceImpl.resolvePrice(maxPrice, priceRange.max());
 
-        model.addAttribute("categories", catalogBrowsingService.listCategories());
+        model.addAttribute("categories", catalogBrowsingServiceImpl.listCategories());
         model.addAttribute("category", category);
-        model.addAttribute("products", catalogBrowsingService.filterProducts(categoryId, resolvedMin, resolvedMax));
+        model.addAttribute("products", catalogBrowsingServiceImpl.filterProducts(categoryId, resolvedMin, resolvedMax));
         model.addAttribute("availableMinPrice", priceRange.min());
         model.addAttribute("availableMaxPrice", priceRange.max());
         model.addAttribute("selectedMinPrice", resolvedMin);
         model.addAttribute("selectedMaxPrice", resolvedMax);
 
         model.addAttribute("cart", cart);
-        model.addAttribute("cartTotal", cartService.calculateTotal(cart));
-        model.addAttribute("cartItemCount", cartService.calculateItemsCount(cart));
+        model.addAttribute("cartTotal", cartServiceImpl.calculateTotal(cart));
+        model.addAttribute("cartItemCount", cartServiceImpl.calculateItemsCount(cart));
 
         String currentUrl = request.getRequestURI();
         if (request.getQueryString() != null && !request.getQueryString().isEmpty()) {

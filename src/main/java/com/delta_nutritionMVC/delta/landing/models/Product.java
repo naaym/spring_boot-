@@ -8,10 +8,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "products")
 public class Product {
 
@@ -34,12 +38,30 @@ public class Product {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public Product() {
-        // JPA requires a no-args constructor
+
     }
 
     public Product(String id, String name, String description, BigDecimal price, BigDecimal originalPrice) {

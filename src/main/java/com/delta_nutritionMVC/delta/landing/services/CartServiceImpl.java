@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class CartService {
+public class CartServiceImpl implements  CarteService{
     private static final String CART_ID_ATTRIBUTE = "cartId";
 
     private final ProductRepository productRepository;
@@ -31,6 +31,7 @@ public class CartService {
     }
 
     @Transactional
+    @Override
     public Cart getOrCreateCart(HttpSession session) {
         Long cartId = (Long) session.getAttribute(CART_ID_ATTRIBUTE);
         if (cartId != null) {
@@ -47,6 +48,7 @@ public class CartService {
     }
 
     @Transactional
+    @Override
     public void addProductToCart(String productId, HttpSession session) {
         Cart cart = getOrCreateCart(session);
         Product product = findProduct(productId).orElseThrow(() -> new IllegalArgumentException("Produit introuvable"));
@@ -58,7 +60,7 @@ public class CartService {
     public BigDecimal calculateTotal(Cart cart) {
         return cart.getTotal();
     }
-
+    @Override
     public int calculateItemsCount(Cart cart) {
         return cart.getItems().stream()
                 .mapToInt(CartItem::getQuantity)
@@ -66,6 +68,7 @@ public class CartService {
     }
 
     @Transactional
+    @Override
     public void updateItemQuantity(Long cartItemId, int quantity, HttpSession session) {
         Cart cart = getOrCreateCart(session);
         cart.updateItemQuantity(cartItemId, quantity);
@@ -73,6 +76,7 @@ public class CartService {
     }
 
     @Transactional
+    @Override
     public void removeItem(Long cartItemId, HttpSession session) {
         Cart cart = getOrCreateCart(session);
         cart.removeItem(cartItemId);
@@ -80,6 +84,7 @@ public class CartService {
     }
 
     @Transactional
+    @Override
     public void clearCart(HttpSession session) {
         Long cartId = (Long) session.getAttribute(CART_ID_ATTRIBUTE);
         if (cartId != null) {

@@ -1,27 +1,44 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" >
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion Client</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-slate-50 flex items-center justify-center px-4">
+<div class="w-full max-w-md">
+    <div class="bg-white/80 backdrop-blur shadow-xl rounded-2xl p-8 border border-slate-100">
+        <div class="mb-6 text-center">
+            <h1 class="text-2xl font-semibold text-slate-900">Bienvenue</h1>
+            <p class="text-sm text-slate-500 mt-1">Connectez-vous pour accéder à votre espace client.</p>
+        </div>
 
-<h2>Connexion</h2>
+        <div th:if="${error}" class="mb-4 rounded-xl border border-red-200 bg-red-50 text-red-700 px-4 py-3 text-sm" th:text="${error}"></div>
 
-<div th:if="${error}">
-    <p style="color:red" th:text="${error}"></p>
+        <form th:action="@{/auth/login}" th:object="${login}" method="post" class="space-y-4">
+            <div class="space-y-1">
+                <label for="email" class="block text-sm font-medium text-slate-700">Email</label>
+                <input id="email" type="email" placeholder="vous@example.com" th:field="*{email}" required
+                       class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-slate-900 shadow-sm focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200" />
+            </div>
+
+            <div class="space-y-1">
+                <label for="password" class="block text-sm font-medium text-slate-700">Mot de passe</label>
+                <input id="password" type="password" placeholder="••••••••" th:field="*{password}" required
+                       class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-slate-900 shadow-sm focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200" />
+            </div>
+
+            <button type="submit"
+                    class="w-full inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-indigo-600 to-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-200 transition hover:from-indigo-500 hover:to-blue-500 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:ring-offset-2">
+                Se connecter
+            </button>
+        </form>
+
+        <p class="mt-6 text-center text-sm text-slate-500">Pas encore de compte ?
+            <a th:href="@{/clients/signup}" class="font-semibold text-indigo-600 hover:text-indigo-500 underline-offset-4 hover:underline">Créer un compte</a>
+        </p>
+    </div>
 </div>
-
-<form th:action="@{/auth/login}" th:object="${login}" method="post">
-
-    <label>Email</label>
-    <input th:field="*{email}">
-
-    <label>Mot de passe</label>
-    <input type="password" th:field="*{password}">
-
-    <button type="submit">Se connecter</button>
-
-</form>
-
 </body>
 </html>

@@ -1,41 +1,69 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Client Sign Up</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Création de compte</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-slate-50 flex items-center justify-center px-4">
+<div class="w-full max-w-2xl">
+    <div class="bg-white/80 backdrop-blur shadow-xl rounded-2xl p-10 border border-slate-100">
+        <div class="mb-6 text-center">
+            <h1 class="text-2xl font-semibold text-slate-900">Créer un compte client</h1>
+            <p class="text-sm text-slate-500 mt-1">Renseignez vos informations pour accéder à votre espace.</p>
+        </div>
+        <div th:if="${error}" class="mb-4 rounded-xl border border-red-200 bg-red-50 text-red-700 px-4 py-3 text-sm" th:text="${error}"></div>
 
-<h2>Créer un compte client</h2>
+        <form th:action="@{/clients/signup}" th:object="${client}" method="post" class="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div class="space-y-1">
+                <label for="fullName" class="block text-sm font-medium text-slate-700">Nom complet</label>
+                <input id="fullName" th:field="*{fullName}" required placeholder="nom_prenom"
+                       class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-slate-900 shadow-sm focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200" />
+            </div>
+            <div class="space-y-1">
+                <label for="email" class="block text-sm font-medium text-slate-700">Email</label>
+                <input id="email" type="email" th:field="*{email}" placeholder="vous@example.com" required
+                       class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-slate-900 shadow-sm focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200" />
+            </div>
 
-<div th:if="${error}">
-  <p style="color:red" th:text="${error}"></p>
+            <div class="space-y-1">
+                <label for="phone" class="block text-sm font-medium text-slate-700">Téléphone</label>
+                <input id="phone" th:field="*{phone}" placeholder="12 345 678"
+                       class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-slate-900 shadow-sm focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200" />
+            </div>
+            <div class="space-y-1">
+                <label for="password" class="block text-sm font-medium text-slate-700">Mot de passe</label>
+                <input id="password" type="password" th:field="*{password}" placeholder="••••••••" required minlength="3"
+                       class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-slate-900 shadow-sm focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200" />
+            </div>
+            <div class="space-y-1 md:col-span-2">
+                <label for="addressLiv" class="block text-sm font-medium text-slate-700">Adresse</label>
+                <input id="addressLiv" th:field="*{addressLiv}" placeholder="N° et rue"
+                       class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-slate-900 shadow-sm focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200" />
+            </div>
+            <div class="space-y-1">
+                <label for="cityName" class="block text-sm font-medium text-slate-700">Ville</label>
+                <input id="cityName" th:field="*{cityName}" placeholder="ettadhamen"
+                       class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-slate-900 shadow-sm focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200" />
+            </div>
+            <div class="md:col-span-2 pt-2">
+                <button type="submit"
+                        class="w-full inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-indigo-600 to-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-200 transition hover:from-indigo-500 hover:to-blue-500 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:ring-offset-2">
+                    Créer le compte
+                </button>
+            </div>
+        </form>
+        <p class="mt-6 text-center text-sm text-slate-500">Déjà inscrit ?
+            <a th:href="@{/auth/login}" class="font-semibold text-indigo-600 hover:text-indigo-500 underline-offset-4 hover:underline">Se connecter</a>
+        </p>
+    </div>
 </div>
 
-<form th:action="@{/clients/signup}" th:object="${client}" method="post">
 
-  <label>Nom complet</label>
-  <input th:field="*{fullName}" />
 
-  <label>Email</label>
-  <input th:field="*{email}" />
 
-  <label>Mot de passe</label>
-  <input type="password" th:field="*{password}" />
 
-  <label>Phone</label>
-  <input th:field="*{phone}" />
-
-  <label>Adresse</label>
-  <input th:field="*{addressLiv}" />
-
-  <label>Ville</label>
-  <input th:field="*{cityName}" />
-
-  <label>Âge</label>
-  <input type="number" th:field="*{age}" />
-
-  <button type="submit">Créer le compte</button>
-</form>
 
 </body>
 </html>

@@ -5,8 +5,8 @@ import com.delta_nutritionMVC.delta.client.dtos.ClientSignUpRequest;
 import com.delta_nutritionMVC.delta.client.dtos.ClientUpdateProfilRequest;
 import com.delta_nutritionMVC.delta.client.services.ClientService;
 import com.delta_nutritionMVC.delta.landing.models.Order;
-import com.delta_nutritionMVC.delta.landing.services.CheckoutService;
-import com.delta_nutritionMVC.delta.landing.services.OrderService;
+import com.delta_nutritionMVC.delta.landing.services.CheckoutServiceImpl;
+import com.delta_nutritionMVC.delta.landing.services.OrderServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +24,8 @@ import java.util.List;
 public class ClientController {
 
     private final ClientService clientService;
-    private final CheckoutService checkoutService;
-    private final OrderService orderService;
+    private final CheckoutServiceImpl checkoutServiceImpl;
+    private final OrderServiceImpl orderServiceImpl;
 
     @GetMapping("/clients/signup")
     public String showSignupForm(Model model) {
@@ -46,24 +46,24 @@ public class ClientController {
             return "clients/signup";
         }
 
-        return "auth/login";
+        return "redirect:/auth/login";
     }
 
     @GetMapping("/clients/dashboard")
     public String dashboard(HttpSession session, Model model) {
         SignInResponse client = (SignInResponse) session.getAttribute("clientSession");
 
-        Order lastOrderFromSession = checkoutService.loadLastOrderFromSession(session);
+        Order lastOrderFromSession = checkoutServiceImpl.loadLastOrderFromSession(session);
         List<Order> recentOrders = client != null
-                ? orderService.fetchLatestOrdersForClient(client.getEmail(), 2)
+                ? orderServiceImpl.fetchLatestOrdersForClient(client.getEmail(), 2)
                 : List.of();
         List<Order> allOrders = client != null
-                ? orderService.findAllForClient(client.getEmail())
+                ? orderServiceImpl.findAllForClient(client.getEmail())
                 : List.of();
 
         BigDecimal totalSpent = BigDecimal.ZERO;
         if (client != null) {
-            totalSpent = orderService.calculateTotalSpentExcludingCancelled(client.getEmail());
+            totalSpent = orderServiceImpl.calculateTotalSpentExcludingCancelled(client.getEmail());
         } else if (lastOrderFromSession != null && !lastOrderFromSession.isCancelled()) {
             totalSpent = lastOrderFromSession.getTotal();
         }
@@ -89,9 +89,9 @@ public class ClientController {
     public String listOrders(HttpSession session, Model model) {
         SignInResponse client = (SignInResponse) session.getAttribute("clientSession");
 
-        Order lastOrderFromSession = checkoutService.loadLastOrderFromSession(session);
+        Order lastOrderFromSession = checkoutServiceImpl.loadLastOrderFromSession(session);
         List<Order> allOrders = client != null
-                ? orderService.findAllForClient(client.getEmail())
+                ? orderServiceImpl.findAllForClient(client.getEmail())
                 : (lastOrderFromSession != null ? List.of(lastOrderFromSession) : List.of());
 
         if (client == null && lastOrderFromSession == null && allOrders.isEmpty()) {

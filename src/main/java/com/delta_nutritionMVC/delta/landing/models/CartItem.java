@@ -9,10 +9,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "cart_items")
 public class CartItem {
     @Id
@@ -30,8 +34,36 @@ public class CartItem {
     @Column(nullable = false)
     private int quantity;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     protected CartItem() {
-        // JPA
+
     }
 
     public CartItem(Cart cart, Product product, int quantity) {

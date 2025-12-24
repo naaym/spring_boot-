@@ -9,11 +9,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "order_items")
+@Getter
+@Setter
 public class OrderItem {
 
     @Id
@@ -34,8 +38,36 @@ public class OrderItem {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal unitPrice;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     protected OrderItem() {
-        // JPA
+
     }
 
     public OrderItem(Order order, Product product, int quantity, BigDecimal unitPrice) {
