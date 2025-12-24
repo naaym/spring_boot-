@@ -46,7 +46,7 @@ public class Order {
     private BigDecimal total;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "ENUM('PAS_ENCORE_LIVREE','EN_ROUTE','LIVREE','ANNULEE')")
     private OrderStatus status = OrderStatus.PAS_ENCORE_LIVREE;
 
     @Column(nullable = false, updatable = false)
